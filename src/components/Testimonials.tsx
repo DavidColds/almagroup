@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-
 const testimonials = [
   {
     name: 'Sophia L.',

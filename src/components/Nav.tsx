@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HiMenu, HiX } from 'react-icons/hi'; // Importing React Icons
+import { HiBars3 as HiMenu, HiXMark as HiX } from 'react-icons/hi2';
 import NavLinks from '@/components/NavLinks';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
-import Link from 'next/dist/client/link';
+import Link from 'next/link';
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,9 +53,9 @@ export default function Nav() {
 
         {/* Hamburger Icon for Mobile */}
         <div className='md:hidden flex items-center'>
-          <button onClick={toggleMenu} className='focus:outline-none text-2xl'>
+          {/*  <button onClick={toggleMenu} className='focus:outline-none text-2xl'>
             {isOpen ? <HiX /> : <HiMenu />}
-          </button>
+          </button> */}
         </div>
       </div>
 
