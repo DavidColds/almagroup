@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HiBars3 as HiMenu, HiXMark as HiX } from 'react-icons/hi2';
 import NavLinks from '@/components/NavLinks';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import Link from 'next/link';
@@ -16,10 +15,8 @@ export default function Nav() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
-        // Scrolling down
         setIsVisible(false);
       } else {
-        // Scrolling up
         setIsVisible(true);
       }
       setLastScrollY(window.scrollY);
@@ -53,9 +50,41 @@ export default function Nav() {
 
         {/* Hamburger Icon for Mobile */}
         <div className='md:hidden flex items-center'>
-          {/*  <button onClick={toggleMenu} className='focus:outline-none text-2xl'>
-            {isOpen ? <HiX /> : <HiMenu />}
-          </button> */}
+          <button onClick={toggleMenu} className='focus:outline-none w-8 h-8'>
+            {isOpen ? (
+              // X icon
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-8 h-8'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M6 18L18 6M6 6l12 12'
+                />
+              </svg>
+            ) : (
+              // Hamburger menu icon
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-8 h-8'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5'
+                />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 
