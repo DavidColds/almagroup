@@ -104,9 +104,9 @@ export default function CleaningCalculator() {
   };
 
   return (
-    <div className='flex flex-col md:flex-row items-start gap-12 max-w-4xl mx-auto p-8'>
+    <div className='flex  text-gray-900 flex-col md:flex-row items-start gap-12 max-w-4xl mx-auto p-8'>
       {/* Form section */}
-      <form className='w-full md:w-1/2 p-8 rounded-lg shadow-xl '>
+      <form className='w-full bg-white md:w-1/2 p-8 rounded-lg shadow-xl '>
         <h2 className='text-2xl font-semibold mb-6 '>Beräkna ditt städpris</h2>
         <label className='block mb-6'>
           <span className='text-lg font-medium'>
@@ -118,7 +118,7 @@ export default function CleaningCalculator() {
             maxLength={10}
             value={kvm}
             onChange={(e) => setKvm(e.target.value)}
-            className='w-full p-4 border rounded-lg mt-2 foc  us:outline-none focus:ring-2 focus:ring-blue-500 text-black'
+            className='w-full p-4 border rounded-lg mt-2 foc  us:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900'
             placeholder='Ange kvm'
             required
             aria-describedby='kvm-info'
@@ -182,13 +182,13 @@ export default function CleaningCalculator() {
       </form>
 
       {/* Price section with details */}
-      <aside className='w-full md:w-1/2 bg-gray-50 p-8 rounded-lg shadow-xl flex flex-col items-center justify-center'>
-        <h3 className='text-2xl font-semibold mb-6 text-gray-800'>Ditt pris</h3>
+      <aside className='w-full bg-white md:w-1/2 p-8 rounded-lg shadow-xl flex flex-col items-center justify-center'>
+        <h3 className='text-2xl font-semibold mb-6'>Ditt pris</h3>
         {price ? (
           <div className='text-center'>
-            <div className='text-3xl font-bold text-blue-600'>{price}</div>
+            <div className='text-3xl font-bold text-gray-900'>{price}</div>
             {details && (
-              <div className='mt-6 text-sm text-gray-700'>
+              <div className='mt-6 text-sm '>
                 <div>
                   <strong className='font-medium'>Storlek:</strong>{' '}
                   {details.kvm} kvm

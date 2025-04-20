@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
+import NextImage from '@/components/NextImage';
 
 export default function ComponentPage() {
   return (
@@ -80,7 +82,9 @@ export default function ComponentPage() {
 
       {/* Right Side - Image */}
       <section className='hidden md:block md:w-1/2'>
-        <img
+        <NextImage
+          width={560}
+          height={1300}
           src='/images/bygg1.jpg'
           alt='Bygg image'
           className='object-cover w-full h-full  '
