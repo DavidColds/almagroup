@@ -29,8 +29,35 @@ const WindowCleaningCalculator = () => {
     (karm ?? 0) * 15 +
     (stege ? 240 : 0);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (amount === undefined) {
+      alert('Fyll i alla obligatoriska fält innan du skickar formuläret.');
+      return;
+    }
+
+    // Prepare email content
+    const emailContent = `
+      Typ av fönster: ${type}
+      Antal fönster: ${amount}
+      Fönsterbleck: ${bleck ?? 0}
+      Karmtvätt: ${karm ?? 0}
+      Behöver stege: ${stege ? 'Ja' : 'Nej'}
+      Totalt pris: ${total} kr
+    `;
+
+    console.log('Email Content:', emailContent);
+
+    // Show alert with details
+    alert(`Formuläret har skickats!\n\n${emailContent}`);
+  };
+
   return (
-    <div className='max-w-xl mx-auto p-6 bg-white shadow-md rounded-xl space-y-6 text-gray-900'>
+    <form
+      onSubmit={handleSubmit}
+      className='max-w-xl mx-auto p-6 bg-white shadow-md rounded-xl space-y-6 text-gray-900'
+    >
       <h2 className='text-2xl font-bold'>Fönsterputs Kalkylator</h2>
 
       <div className='space-y-4'>
@@ -58,6 +85,7 @@ const WindowCleaningCalculator = () => {
                 setAmount(e.target.value ? Number(e.target.value) : undefined)
               }
               className='w-full p-2 border rounded'
+              required
             />
           </div>
 
@@ -108,7 +136,14 @@ const WindowCleaningCalculator = () => {
           {amount !== undefined ? `${total} kr` : '—'}
         </span>
       </div>
-    </div>
+
+      <button
+        type='submit'
+        className='w-full py-3 rounded bg-blue-500 text-white'
+      >
+        Skicka
+      </button>
+    </form>
   );
 };
 

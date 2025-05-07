@@ -62,53 +62,91 @@ export default function FixedPriceCalculator() {
     setPrice(`${total} SEK`);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const numericKvm = parseInt(kvm, 10);
+    if (!numericKvm || numericKvm < 0) {
+      alert('Fyll i bostadens storlek innan du skickar formuläret.');
+      return;
+    }
+
+    // Prepare email content
+    const emailContent = `
+      Bostadens storlek: ${kvm} kvm
+      Ugnsrengöring: ${includeOven ? 'Ja' : 'Nej'}
+      Kyl/Frys rengöring: ${includeFridge ? 'Ja' : 'Nej'}
+      Totalt pris: ${price}
+    `;
+
+    console.log('Email Content:', emailContent);
+
+    // Show alert with details
+    alert(`Formuläret har skickats!\n\n${emailContent}`);
+  };
+
   return (
-    <div className='flex flex-col md:flex-row gap-8 max-w-4xl mx-auto p-8 text-gray-900'>
-      <form className='w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg space-y-6'>
-        <h2 className='text-2xl font-bold mb-4'>Stor Städning </h2>
+    <div className='w-full max-w-5xl mx-auto p-6'>
+      <div className='flex flex-col md:flex-row gap-8'>
+        {/* Form Section */}
+        <form
+          onSubmit={handleSubmit}
+          className='w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg space-y-6'
+        >
+          <h2 className='text-2xl font-bold mb-4'>Stor Städning</h2>
 
-        <label className='block space-y-2'>
-          <span className='font-medium'>Bostadens storlek (kvm)</span>
-          <input
-            type='text'
-            inputMode='numeric'
-            value={kvm}
-            onChange={(e) => setKvm(e.target.value)}
-            className='w-full p-3 border border-gray-300 rounded'
-            placeholder='Ex. 75'
-            aria-label='Kvadratmeter'
-          />
-        </label>
-
-        <div className='space-y-4'>
-          <label className='flex items-center space-x-3'>
+          <label className='block space-y-2'>
+            <span className='font-medium'>Bostadens storlek (kvm)</span>
             <input
-              type='checkbox'
-              checked={includeOven}
-              onChange={() => setIncludeOven(!includeOven)}
+              type='text'
+              inputMode='numeric'
+              value={kvm}
+              onChange={(e) => setKvm(e.target.value)}
+              className='w-full p-3 border border-gray-300 rounded'
+              placeholder='Ex. 75'
+              aria-label='Kvadratmeter'
+              required
             />
-            <span>Ugnsrengöring (+279 SEK)</span>
           </label>
 
-          <label className='flex items-center space-x-3'>
-            <input
-              type='checkbox'
-              checked={includeFridge}
-              onChange={() => setIncludeFridge(!includeFridge)}
-            />
-            <span>Kyl/Frys rengöring (+279 SEK)</span>
-          </label>
-        </div>
-      </form>
+          <div className='space-y-4'>
+            <label className='flex items-center space-x-3'>
+              <input
+                type='checkbox'
+                checked={includeOven}
+                onChange={() => setIncludeOven(!includeOven)}
+              />
+              <span>Ugnsrengöring (+279 SEK)</span>
+            </label>
 
-      <aside className='w-full md:w-1/2 bg-gray-50 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center text-center space-y-4'>
-        <h3 className='text-lg font-semibold'>Totalt pris</h3>
-        {price ? (
-          <div className='text-3xl font-bold text-blue-600'>{price}</div>
-        ) : (
-          <div className='text-gray-500'>Fyll i bostadens storlek</div>
-        )}
-      </aside>
+            <label className='flex items-center space-x-3'>
+              <input
+                type='checkbox'
+                checked={includeFridge}
+                onChange={() => setIncludeFridge(!includeFridge)}
+              />
+              <span>Kyl/Frys rengöring (+279 SEK)</span>
+            </label>
+          </div>
+
+          <button
+            type='submit'
+            className='w-full py-3 rounded bg-blue-500 text-white'
+          >
+            Skicka
+          </button>
+        </form>
+
+        {/* Aside Section */}
+        <aside className='w-full md:w-1/2 bg-gray-50 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center text-center space-y-4'>
+          <h3 className='text-lg font-semibold'>Totalt pris</h3>
+          {price ? (
+            <div className='text-3xl font-bold text-blue-600'>{price}</div>
+          ) : (
+            <div className='text-gray-500'>Fyll i bostadens storlek</div>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }

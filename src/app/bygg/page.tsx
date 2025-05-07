@@ -6,9 +6,11 @@ import NextImage from '@/components/NextImage';
 
 export default function ComponentPage() {
   return (
-    <main className='min-h-screen flex flex-col md:flex-row container mx-auto'>
+    <main className='min-h-screen flex flex-col md:flex-row md:pt-40  container mx-auto'>
       {/* Left Side */}
-      <section className='w-full md:w-1/2 p-8 pt-40 md:pt-40  space-y-6 overflow-hidden'>
+
+      {/* Right Side - Image */}
+      <section className='w-full md:w-1/2 p-8  space-y-6 overflow-hidden'>
         <h1 className='text-4xl font-semibold'>Bygg</h1>
         <p className='text-lg leading-relaxed'>
           Vi är ett ledande byggföretag med över 20 års erfarenhet inom
@@ -29,7 +31,9 @@ export default function ComponentPage() {
             <li>Projektledning och rådgivning</li>
           </ul>
         </div>
+      </section>
 
+      <section className='w-full md:w-1/2 p-8  space-y-6 overflow-hidden'>
         {/* Contact Form */}
         <div className='mt-8'>
           <h2 className='text-2xl font-semibold'>Kontakta oss</h2>
@@ -72,23 +76,12 @@ export default function ComponentPage() {
 
             <button
               type='submit'
-              className='w-full py-3   hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+              className='w-full py-3  bg-gray-300 hover:bg-gray-400  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
             >
               Skicka
             </button>
           </form>
         </div>
-      </section>
-
-      {/* Right Side - Image */}
-      <section className='hidden md:block md:w-1/2'>
-        <NextImage
-          width={560}
-          height={1300}
-          src='/images/bygg1.jpg'
-          alt='Bygg image'
-          className='object-cover w-full h-full  '
-        />
       </section>
     </main>
   );

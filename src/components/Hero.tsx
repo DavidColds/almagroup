@@ -4,7 +4,7 @@ import NextImage from '@/components/NextImage';
 
 export default function Hero(): JSX.Element {
   return (
-    <div className='relative flex h-[58vh] min-h-[700px] flex-col justify-center text-center text-white mt-20'>
+    <div className='relative flex h-[58vh] min-h-[700px] flex-col justify-center text-center text-white mt-28'>
       {/* Background Image */}
       <NextImage
         className='absolute inset-0 w-full h-full ' // Ensures it covers the section

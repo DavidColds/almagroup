@@ -4,16 +4,17 @@ const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/bigCleaning', label: 'Stor Städning' },
   { href: '/windowCleaning', label: 'Fönster Puts' },
+  { href: '/contact', label: 'Kontakta oss' },
 ];
 
 export default function NavLinks() {
   return (
-    <nav className='flex gap-8'>
+    <nav className='flex flex-col items-center gap-4 sm:flex-row sm:gap-8'>
       {navLinks.map(({ href, label }) => (
         <a
           key={href}
           href={href}
-          className='text-xl font-medium dark:hover:text-white transition'
+          className='text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition'
         >
           {label}
         </a>

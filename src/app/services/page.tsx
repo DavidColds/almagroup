@@ -1,12 +1,10 @@
 'use client';
+import HomeCleaningForm from '@/components/calculator/HomeCleaningForm';
 
-import CleaningCalculator from '@/components/calculator/CleaningSub';
-import React from 'react';
-
-export default function Cleaning() {
+export default function Home() {
   return (
-    <main className='p-8 pt-40 md:pt-40  space-y-6 overflow-hidden'>
-      <CleaningCalculator />
+    <main className='min-h-screen flex items-center justify-center pt-28 pb-32 g:p-28'>
+      <HomeCleaningForm />
     </main>
   );
 }
