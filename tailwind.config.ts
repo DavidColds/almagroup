@@ -6,6 +6,9 @@ export default {
   darkMode: 'class', // Enable dark mode with class strategy
   theme: {
     extend: {
+      colors: {
+        beige: '#f5f5dc', // Add your beige color here
+      },
       fontFamily: {
         primary: ['Inter', ...defaultTheme.fontFamily.sans],
       },
@@ -33,6 +36,16 @@ export default {
       animation: {
         flicker: 'flicker 3s linear infinite',
         shimmer: 'shimmer 1.3s linear infinite',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            '.required:after': {
+              content: '" *"',
+              color: 'red',
+            },
+          },
+        },
       },
     },
   },

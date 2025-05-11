@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     to: 'drughidavid6@gmail.com',
     subject: 'New Contact Form Submission',
     html: `
-      <p><strong>Name:</strong> ${data.firstName} ${data.lastName}</p>
+      <p><strong>Name:</strong> ${data.firstName}</p>
+      <p><strong>Efternamn:</strong> ${data.lastName}</p>
       <p><strong>Email:</strong> ${data.email}</p>
       <p><strong>Org Number:</strong> ${data.orgNumber}</p>
       <p><strong>Phone:</strong> ${data.phone}</p>

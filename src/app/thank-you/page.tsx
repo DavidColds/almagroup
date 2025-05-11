@@ -2,22 +2,20 @@ import { Metadata } from 'next';
 import * as React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Sidan hittades inte',
+  title: 'Tack för ditt meddelande!',
 };
 
-export default function NotFound() {
+export default function ThankYou() {
   return (
     <main>
       <section>
-        <div className='layout flex min-h-screen flex-col items-center justify-center text-center text-gray-900'>
-          <h1 className='mt-8 text-5xl font-bold text-red-600 md:text-7xl'>
-            404
+        <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
+          <h1 className='mt-8 text-5xl font-bold text-green-600 md:text-7xl'>
+            Tack!
           </h1>
-          <p className='mt-4 text-xl md:text-2xl text-gray-700'>
-            Oops! <br />
-            <br />
-            Något gick fel. <br />
-            <br /> Försök igen senare eller gå tillbaka till startsidan.
+          <p className='mt-4 text-xl md:text-2xl'>
+            Ditt meddelande har skickats. Vi återkommer till dig så snart som
+            möjligt.
           </p>
           <a
             href='/'

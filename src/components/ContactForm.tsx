@@ -1,4 +1,6 @@
+'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,15 +13,8 @@ export default function ContactForm() {
   });
 
   const [status, setStatus] = useState('');
-
-  interface FormData {
-    firstName: string;
-    lastName: string;
-    orgNumber: string;
-    message: string;
-    phone: string;
-    email: string;
-  }
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter(); // Initialize useRouter
 
   interface ChangeEvent {
     target: {
@@ -30,24 +25,15 @@ export default function ContactForm() {
 
   const handleChange = (e: ChangeEvent) => {
     const { name, value } = e.target;
-    setFormData((prevFormData: FormData) => ({
-      ...prevFormData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  interface SubmitEvent {
-    preventDefault: () => void;
-  }
-
-  interface ApiResponse {
-    status: string;
-  }
-
-  const handleSubmit = async (e: SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simple validation
     if (
       !formData.firstName ||
       !formData.lastName ||
@@ -60,14 +46,15 @@ export default function ContactForm() {
       return;
     }
 
-    // Validate email format using regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(formData.email)) {
       setStatus('Please enter a valid email address.');
       return;
     }
 
-    // Format phone number
+    setIsSubmitting(true);
+    setStatus('');
+
     const formattedPhone = formData.phone.replace(
       /(\d{3})(\d{3})(\d{3})/,
       '+46 $1-$2-$3',
@@ -79,7 +66,7 @@ export default function ContactForm() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: formData.firstName,
+        firstName: formData.firstName,
         lastName: formData.lastName,
         orgNumber: formData.orgNumber,
         message: formData.message,
@@ -88,99 +75,100 @@ export default function ContactForm() {
       }),
     });
 
-    const result: ApiResponse = await response.json();
+    const result = await response.json();
+
     if (result.status === 'success') {
-      setStatus('Your message has been sent successfully!');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        orgNumber: '',
+        message: '',
+        phone: '',
+        email: '',
+      });
+      setStatus(''); // Clear status
+      router.push('/thank-you'); // Redirect to thank-you page
     } else {
-      setStatus('There was an error sending your message.');
+      setStatus('Ett fel uppstod. Försök igen.');
     }
+
+    setIsSubmitting(false);
   };
 
   return (
-    <div className='max-w-4xl mx-auto py-3 md:p-6  shadow-lg rounded-lg'>
-      <h2 className='text-2xl font-semibold mb-4 text-center'>Contact Us</h2>
+    <div className='max-w-4xl mx-auto py-3 md:p-6 shadow-lg rounded-lg'>
+      <h2 className='text-2xl font-semibold mb-4 text-center'>Kontakta oss</h2>
       <form onSubmit={handleSubmit}>
         <div className='grid gap-4'>
-          <div>
-            <label htmlFor='firstName' className='block font-medium '>
-              Namn:
-            </label>
-            <input
-              type='text'
-              id='firstName'
-              name='firstName'
-              value={formData.firstName}
-              onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
-              required
-            />
+          <div className='grid grid-cols-2 gap-4'>
+            <div>
+              <label className='block font-medium'>Namn:</label>
+              <input
+                type='text'
+                name='firstName'
+                value={formData.firstName}
+                onChange={handleChange}
+                className='w-full p-3 border border-gray-300 rounded-md text-black'
+                required
+              />
+            </div>
+            <div>
+              <label className='block font-medium'>Efternamn:</label>
+              <input
+                type='text'
+                name='lastName'
+                value={formData.lastName}
+                onChange={handleChange}
+                className='w-full p-3 border border-gray-300 rounded-md text-black'
+                required
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor='lastName' className='block font-medium '>
-              Efternamn:
-            </label>
-            <input
-              type='text'
-              id='lastName'
-              name='lastName'
-              value={formData.lastName}
-              onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
-              required
-            />
+
+          <div className='grid grid-cols-2 gap-4'>
+            <div>
+              <label className='block font-medium'>Telefonnummer:</label>
+              <input
+                type='tel'
+                name='phone'
+                value={formData.phone}
+                onChange={handleChange}
+                className='w-full p-3 border border-gray-300 rounded-md text-black'
+                required
+              />
+            </div>
+            <div>
+              <label className='block font-medium'>Org-nummer:</label>
+              <input
+                type='text'
+                name='orgNumber'
+                value={formData.orgNumber}
+                onChange={handleChange}
+                className='w-full p-3 border border-gray-300 rounded-md text-black'
+                required
+              />
+            </div>
           </div>
+
           <div>
-            <label htmlFor='phone' className='block font-medium '>
-              Telefonnummer (+46 xxx-xxx-xxx):
-            </label>
-            <input
-              type='tel'
-              id='phone'
-              name='phone'
-              value={formData.phone}
-              onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor='email' className='block font-medium '>
-              Email:
-            </label>
+            <label className='block font-medium'>Email:</label>
             <input
               type='email'
-              id='email'
               name='email'
               value={formData.email}
               onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
+              className='w-full p-3 border border-gray-300 rounded-md text-black'
               required
             />
           </div>
+
           <div>
-            <label htmlFor='orgNumber' className='block font-medium '>
-              Org-nummer:
-            </label>
-            <input
-              type='text'
-              id='orgNumber'
-              name='orgNumber'
-              value={formData.orgNumber}
-              onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor='message' className='block font-medium '>
-              Meddelande:
-            </label>
+            <label className='block font-medium'>Meddelande:</label>
             <textarea
-              id='message'
               name='message'
               value={formData.message}
               onChange={handleChange}
-              className='w-full p-3 border border-gray-300 rounded-md'
+              className='w-full p-3 border border-gray-300 rounded-md text-black'
               required
             ></textarea>
           </div>
@@ -189,15 +177,22 @@ export default function ContactForm() {
         <div className='mt-6 text-center'>
           <button
             type='submit'
-            className=' py-2 px-6 rounded-md hover:bg-blue-600'
+            disabled={isSubmitting}
+            className='bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 disabled:opacity-50'
           >
-            Skicka meddelande
+            {isSubmitting ? 'Skickar...' : 'Skicka meddelande'}
           </button>
         </div>
       </form>
 
       {status && (
-        <p className='mt-4 text-center text-sm font-semibold'>{status}</p>
+        <p
+          className={`mt-4 text-center text-sm font-semibold ${
+            status.includes('skickats') ? 'text-green-600' : 'text-red-500'
+          }`}
+        >
+          {status}
+        </p>
       )}
     </div>
   );
