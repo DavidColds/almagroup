@@ -1,16 +1,15 @@
 'use client';
 
+import ContactForm from '@/components/ContactForm';
 import React from 'react';
-import Image from 'next/image';
-import NextImage from '@/components/NextImage';
 
 export default function ComponentPage() {
   return (
-    <main className='min-h-screen flex flex-col md:flex-row md:pt-40  container mx-auto'>
+    <main className='min-h-screen flex flex-col md:flex-row md:pt-40  pt-28 pb-32 g:p-28  container mx-auto'>
       {/* Left Side */}
 
       {/* Right Side - Image */}
-      <section className='w-full md:w-1/2 p-8  space-y-6 overflow-hidden'>
+      <section className='w-full md:w-1/2 p-8 space-y-6 overflow-hidden'>
         <h1 className='text-4xl font-semibold'>Bygg</h1>
         <p className='text-lg leading-relaxed'>
           Vi är ett ledande byggföretag med över 20 års erfarenhet inom
@@ -35,7 +34,10 @@ export default function ComponentPage() {
 
       <section className='w-full md:w-1/2 p-8  space-y-6 overflow-hidden'>
         {/* Contact Form */}
-        <div className='mt-8'>
+
+        <ContactForm />
+
+        {/*  <div className='mt-8'>
           <h2 className='text-2xl font-semibold'>Kontakta oss</h2>
           <form className='space-y-6'>
             <div>
@@ -81,7 +83,7 @@ export default function ComponentPage() {
               Skicka
             </button>
           </form>
-        </div>
+        </div> */}
       </section>
     </main>
   );
