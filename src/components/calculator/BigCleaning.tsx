@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import DatePicker from 'react-datepicker';
+import { sv } from 'date-fns/locale';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const fixedCleaningPrices = [
   { minKvm: 0, maxKvm: 30, price: 1599 },
@@ -29,14 +33,19 @@ export default function FixedPriceCalculator() {
   const [includeOven, setIncludeOven] = useState(false);
   const [includeFridge, setIncludeFridge] = useState(false);
   const [price, setPrice] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState<Date | null>(null); // Ensure date is a Date object
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     calculatePrice();
   }, [kvm, includeOven, includeFridge]);
 
   const calculatePrice = () => {
-    const numericKvm = parseInt(kvm, 10);
-    if (!numericKvm || numericKvm < 0) {
+    const numericKvm = parseInt(kvm.replace(/\D/g, ''), 10);
+    if (isNaN(numericKvm) || numericKvm <= 0) {
       setPrice(null);
       return;
     }
@@ -62,90 +71,158 @@ export default function FixedPriceCalculator() {
     setPrice(`${total} SEK`);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const numericKvm = parseInt(kvm, 10);
-    if (!numericKvm || numericKvm < 0) {
-      alert('Fyll i bostadens storlek innan du skickar formuläret.');
+    const numericKvm = parseInt(kvm.replace(/\D/g, ''), 10);
+    if (isNaN(numericKvm) || numericKvm <= 0) {
+      alert('Fyll i en giltig bostadsstorlek innan du skickar formuläret.');
       return;
     }
 
-    // Prepare email content
-    const emailContent = `
-      Bostadens storlek: ${kvm} kvm
-      Ugnsrengöring: ${includeOven ? 'Ja' : 'Nej'}
-      Kyl/Frys rengöring: ${includeFridge ? 'Ja' : 'Nej'}
-      Totalt pris: ${price}
-    `;
+    if (!name || !email || !phone || !date) {
+      alert('Fyll i alla obligatoriska fält.');
+      return;
+    }
 
-    console.log('Email Content:', emailContent);
+    const payload = {
+      kvm: numericKvm,
+      includeOven,
+      includeFridge,
+      price: price || 'Ej tillgängligt',
+      name,
+      email,
+      phone,
+      date: date.toISOString().split('T')[0], // Format date as yyyy-MM-dd
+    };
 
-    // Show alert with details
-    alert(`Formuläret har skickats!\n\n${emailContent}`);
+    try {
+      const res = await fetch('/api/send-cleaning-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+      if (result.status === 'success') {
+        router.push('/thank-you'); // Redirect to thank-you page
+      } else {
+        alert('Något gick fel. Försök igen.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      alert('Serverfel. Kunde inte skicka formuläret.');
+    }
   };
 
   return (
-    <div className='w-full max-w-5xl mx-auto p-6'>
-      <div className='flex flex-col md:flex-row gap-8'>
-        {/* Form Section */}
-        <form
-          onSubmit={handleSubmit}
-          className='w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg space-y-6'
-        >
-          <h2 className='text-2xl font-bold mb-4'>Stor Städning</h2>
+    <div className='w-full max-w-4xl mx-auto p-6 rounded-lg shadow-md'>
+      <h2 className='text-3xl font-bold mb-6'>Stor Städning</h2>
+      <form onSubmit={handleSubmit} className='space-y-6'>
+        {/* KVM Input */}
+        <div>
+          <label className='block font-medium'>Bostadens storlek (kvm)</label>
+          <input
+            type='text'
+            inputMode='numeric'
+            pattern='[0-9]*'
+            value={kvm}
+            onChange={(e) => setKvm(e.target.value)}
+            className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+            placeholder='Ex. 75'
+            required
+          />
+        </div>
 
-          <label className='block space-y-2'>
-            <span className='font-medium'>Bostadens storlek (kvm)</span>
+        {/* Add-ons */}
+        <div className='space-y-4'>
+          <label className='flex items-center justify-between border rounded-md p-5'>
+            <span>Ugnsrengöring (+279 SEK)</span>
             <input
-              type='text'
-              inputMode='numeric'
-              value={kvm}
-              onChange={(e) => setKvm(e.target.value)}
-              className='w-full p-3 border border-gray-300 rounded'
-              placeholder='Ex. 75'
-              aria-label='Kvadratmeter'
-              required
+              type='checkbox'
+              checked={includeOven}
+              onChange={() => setIncludeOven(!includeOven)}
             />
           </label>
+          <label className='flex items-center justify-between border rounded-md p-5'>
+            <span>Kyl/Frys rengöring (+279 SEK)</span>
+            <input
+              type='checkbox'
+              checked={includeFridge}
+              onChange={() => setIncludeFridge(!includeFridge)}
+            />
+          </label>
+        </div>
 
-          <div className='space-y-4'>
-            <label className='flex items-center space-x-3'>
-              <input
-                type='checkbox'
-                checked={includeOven}
-                onChange={() => setIncludeOven(!includeOven)}
-              />
-              <span>Ugnsrengöring (+279 SEK)</span>
-            </label>
-
-            <label className='flex items-center space-x-3'>
-              <input
-                type='checkbox'
-                checked={includeFridge}
-                onChange={() => setIncludeFridge(!includeFridge)}
-              />
-              <span>Kyl/Frys rengöring (+279 SEK)</span>
-            </label>
+        {/* Contact Information */}
+        <div className='space-y-4'>
+          <h3 className='text-xl font-bold'>Kontaktuppgifter</h3>
+          <div>
+            <label className='block font-medium'>Namn</label>
+            <input
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              placeholder='Ditt namn'
+              required
+            />
           </div>
+          <div>
+            <label className='block font-medium'>Email</label>
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              placeholder='Din email'
+              required
+            />
+          </div>
+          <div>
+            <label className='block font-medium'>Telefonnummer</label>
+            <input
+              type='tel'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              placeholder='Ditt telefonnummer'
+              required
+            />
+          </div>
+        </div>
 
-          <button
-            type='submit'
-            className='w-full py-3 rounded bg-blue-500 text-white'
-          >
-            Skicka
-          </button>
-        </form>
+        {/* Date Picker */}
+        <div className='w-full'>
+          <label className='block text-sm font-medium mb-1'>Välj datum</label>
+          <div className='relative w-full'>
+            <DatePicker
+              placeholderText='Välj datum'
+              selected={date}
+              onChange={(date) => setDate(date)}
+              dateFormat='yyyy-MM-dd'
+              className='w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            />
+          </div>
+        </div>
 
-        {/* Aside Section */}
-        <aside className='w-full md:w-1/2 bg-gray-50 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center text-center space-y-4'>
-          <h3 className='text-lg font-semibold'>Totalt pris</h3>
-          {price ? (
-            <div className='text-3xl font-bold text-blue-600'>{price}</div>
-          ) : (
-            <div className='text-gray-500'>Fyll i bostadens storlek</div>
-          )}
-        </aside>
+        {/* Submit Button */}
+        <button
+          type='submit'
+          className='w-full py-3 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition'
+        >
+          Skicka
+        </button>
+      </form>
+
+      {/* Total Price */}
+      <div className='mt-6 text-center'>
+        <h3 className='text-lg font-semibold'>Totalt pris</h3>
+        {price ? (
+          <div className='text-3xl font-bold text-blue-600'>{price}</div>
+        ) : (
+          <div className='text-gray-500'>Fyll i bostadens storlek</div>
+        )}
       </div>
     </div>
   );

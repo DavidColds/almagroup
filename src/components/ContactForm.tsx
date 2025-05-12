@@ -145,7 +145,6 @@ export default function ContactForm() {
                 value={formData.orgNumber}
                 onChange={handleChange}
                 className='w-full p-3 border border-gray-300 rounded-md text-black'
-                required
               />
             </div>
           </div>

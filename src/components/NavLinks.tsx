@@ -1,10 +1,9 @@
 const navLinks = [
   { href: '/', label: 'Hem' },
   { href: '/bygg', label: 'Bygg' },
-  { href: '/services', label: 'Services' },
+  { href: '/services', label: 'Städning' },
   { href: '/bigCleaning', label: 'Stor Städning' },
   { href: '/windowCleaning', label: 'Fönster Puts' },
-  { href: '/contact', label: 'Kontakta oss' },
 ];
 
 export default function NavLinks() {
