@@ -33,18 +33,19 @@ export default function Nav() {
       }`}
     >
       <div className='container mx-auto flex items-center justify-between'>
-        {/* Logo */}
-        <Link href='/' className='text-xl font-semibold'>
-          Logo
+        {/* Almagrupp Logo */}
+        <Link href='/'>
+          <div className='text-[2.5rem] font-semibold tracking-tight leading-none uppercase'>
+            <span className='text-black dark:text-white'>Alma</span>
+            <span className='text-neutral-600 dark:text-neutral-400 font-light'>
+              grupp
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <div className='hidden md:flex space-x-8'>
+        {/* Right-Aligned Navigation Links and ThemeSwitcher */}
+        <div className='hidden md:flex items-center space-x-8 justify-end'>
           <NavLinks />
-        </div>
-
-        {/* ThemeSwitcher Component */}
-        <div className='hidden md:block'>
           <ThemeSwitcher />
         </div>
 

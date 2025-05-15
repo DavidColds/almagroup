@@ -96,7 +96,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className='max-w-4xl mx-auto py-3 md:p-6 shadow-lg rounded-lg'>
+    <div className='max-w-4xl mx-auto py-3 md:p-6 shadow-lg rounded-lg dark:bg-[#2a2a2a] '>
       <h2 className='text-2xl font-semibold mb-4 text-center'>Kontakta oss</h2>
       <form onSubmit={handleSubmit}>
         <div className='grid gap-4'>

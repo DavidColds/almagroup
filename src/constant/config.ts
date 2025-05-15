@@ -1,5 +1,5 @@
 export const siteConfig = {
-  title: 'Almagroup',
+  title: 'Almagrupp',
   description:
     '',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */

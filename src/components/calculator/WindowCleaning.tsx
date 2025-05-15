@@ -54,14 +54,13 @@ const WindowCleaningCalculator = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='max-w-xl mx-auto p-6 bg-white shadow-md rounded-xl space-y-6 text-gray-900'
-    >
-      <h2 className='text-2xl font-bold'>Fönsterputs Kalkylator</h2>
+    <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 rounded-lg shadow-md dark:bg-[#282828f0] bg-[#d8d8d879]'>
+      <form onSubmit={handleSubmit} className='space-y-6'>
+        <h2 className='text-3xl font-bold mb-6'>Fönsterputs Kalkylator</h2>
 
-      <div className='space-y-4'>
-        <label className='block font-semibold'>Typ av fönster:</label>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+          Typ av fönster:
+        </label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value as CleaningType)}
@@ -76,7 +75,9 @@ const WindowCleaningCalculator = () => {
 
         <div className='grid grid-cols-2 gap-4'>
           <div>
-            <label className='block font-semibold'>Antal fönster:</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Antal fönster:
+            </label>
             <input
               type='number'
               placeholder='t.ex. 5'
@@ -90,7 +91,9 @@ const WindowCleaningCalculator = () => {
           </div>
 
           <div>
-            <label className='block font-semibold'>Fönsterbleck (st):</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Fönsterbleck (st):
+            </label>
             <input
               type='number'
               placeholder='t.ex. 3'
@@ -103,7 +106,9 @@ const WindowCleaningCalculator = () => {
           </div>
 
           <div>
-            <label className='block font-semibold'>Karmtvätt (st):</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Karmtvätt (st):
+            </label>
             <input
               type='number'
               placeholder='t.ex. 2'
@@ -128,22 +133,22 @@ const WindowCleaningCalculator = () => {
             </label>
           </div>
         </div>
-      </div>
 
-      <div className='text-xl font-bold text-right'>
-        Totalt pris:{' '}
-        <span className='text-green-600'>
-          {amount !== undefined ? `${total} kr` : '—'}
-        </span>
-      </div>
+        <div className='text-xl font-bold text-right'>
+          Totalt pris:{' '}
+          <span className='text-green-600'>
+            {amount !== undefined ? `${total} kr` : '—'}
+          </span>
+        </div>
 
-      <button
-        type='submit'
-        className='w-full py-3 rounded bg-blue-500 text-white'
-      >
-        Skicka
-      </button>
-    </form>
+        <button
+          type='submit'
+          className='w-full py-3 rounded bg-blue-500 text-white'
+        >
+          Skicka
+        </button>
+      </form>
+    </div>
   );
 };
 

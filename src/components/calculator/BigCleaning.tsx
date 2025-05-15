@@ -116,110 +116,118 @@ export default function FixedPriceCalculator() {
   };
 
   return (
-    <div className='w-full max-w-4xl mx-auto p-6 rounded-lg shadow-md'>
+    <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 rounded-lg shadow-md dark:bg-[#282828f0] bg-[#d8d8d879]'>
       <h2 className='text-3xl font-bold mb-6'>Stor Städning</h2>
       <form onSubmit={handleSubmit} className='space-y-6'>
-        {/* KVM Input */}
-        <div>
-          <label className='block font-medium'>Bostadens storlek (kvm)</label>
+        <div className='w-full'>
+          <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+            Bostadens storlek (kvm)
+          </label>
           <input
             type='text'
             inputMode='numeric'
             pattern='[0-9]*'
             value={kvm}
             onChange={(e) => setKvm(e.target.value)}
-            className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
             placeholder='Ex. 75'
             required
+            className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
           />
         </div>
 
-        {/* Add-ons */}
         <div className='space-y-4'>
-          <label className='flex items-center justify-between border rounded-md p-5'>
+          <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
             <span>Ugnsrengöring (+279 SEK)</span>
             <input
               type='checkbox'
               checked={includeOven}
               onChange={() => setIncludeOven(!includeOven)}
+              className=' h-5 w-5 text-gray-600'
             />
           </label>
-          <label className='flex items-center justify-between border rounded-md p-5'>
+          <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
             <span>Kyl/Frys rengöring (+279 SEK)</span>
             <input
               type='checkbox'
               checked={includeFridge}
               onChange={() => setIncludeFridge(!includeFridge)}
+              className=' h-5 w-5 text-gray-600'
             />
           </label>
         </div>
 
-        {/* Contact Information */}
         <div className='space-y-4'>
           <h3 className='text-xl font-bold'>Kontaktuppgifter</h3>
           <div>
-            <label className='block font-medium'>Namn</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Namn
+            </label>
             <input
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               placeholder='Ditt namn'
               required
             />
           </div>
           <div>
-            <label className='block font-medium'>Email</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Email
+            </label>
             <input
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               placeholder='Din email'
               required
             />
           </div>
           <div>
-            <label className='block font-medium'>Telefonnummer</label>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
+              Telefonnummer
+            </label>
             <input
               type='tel'
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className='w-full mt-2 p-5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               placeholder='Ditt telefonnummer'
               required
             />
           </div>
         </div>
 
-        {/* Date Picker */}
         <div className='w-full'>
-          <label className='block text-sm font-medium mb-1'>Välj datum</label>
+          <label className='block text-sm font-medium mb-1 tracking-wide text-gray-700 dark:text-gray-300'>
+            Välj datum
+          </label>
           <div className='relative w-full'>
             <DatePicker
               placeholderText='Välj datum'
               selected={date}
               onChange={(date) => setDate(date)}
               dateFormat='yyyy-MM-dd'
-              className='w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
             />
           </div>
         </div>
 
-        {/* Submit Button */}
         <button
           type='submit'
-          className='w-full py-3 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition'
+          className='w-full py-3 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300'
         >
           Skicka
         </button>
       </form>
 
-      {/* Total Price */}
-      <div className='mt-6 text-center'>
+      <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center'>
         <h3 className='text-lg font-semibold'>Totalt pris</h3>
         {price ? (
-          <div className='text-3xl font-bold text-blue-600'>{price}</div>
+          <div className='text-3xl font-bold text-gray-900 dark:text-white'>
+            {price}
+          </div>
         ) : (
           <div className='text-gray-500'>Fyll i bostadens storlek</div>
         )}
