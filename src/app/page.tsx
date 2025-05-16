@@ -10,7 +10,7 @@ import Testimonials from '@/components/Testimonials';
 
 export default function HomePage() {
   return (
-    <main className='min-h-screen'>
+    <main className='min-h-screen w-full'>
       <Head>
         <title>Hi</title>
       </Head>

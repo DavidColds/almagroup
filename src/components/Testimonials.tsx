@@ -27,21 +27,23 @@ const testimonials = [
 
 export default function Testimonials(): JSX.Element {
   return (
-    <section className='container mx-auto py-24'>
-      <h2 className='mb-6 text-center text-3xl font-semibold'>
-        What Our Clients Say
-      </h2>
-      <div className='relative overflow-x-auto scrollbar-custom scroll-smooth'>
-        <div className='flex snap-x snap-mandatory space-x-6 px-4 py-5 sm:px-8'>
-          {testimonials.map(({ name, text }, index) => (
-            <div
-              key={index}
-              className='w-80 min-w-[320px] snap-center rounded-lg p-6 shadow-lg'
-            >
-              <p className='text-lg italic'>"{text}"</p>
-              <p className='mt-4 text-right font-semibold'>- {name}</p>
-            </div>
-          ))}
+    <section className='px-4 py-24 bg-[#7e7e7e4f]'>
+      <div className='container mx-auto '>
+        <h2 className='mb-6 text-center text-3xl font-semibold'>
+          What Our Clients Say
+        </h2>
+        <div className='relative overflow-x-auto scrollbar-custom scroll-smooth'>
+          <div className='flex snap-x snap-mandatory space-x-6 px-4 py-5 sm:px-8'>
+            {testimonials.map(({ name, text }, index) => (
+              <div
+                key={index}
+                className='w-80 min-w-[320px] snap-center rounded-lg p-6 shadow-lg'
+              >
+                <p className='text-lg italic'>"{text}"</p>
+                <p className='mt-4 text-right font-semibold'>- {name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

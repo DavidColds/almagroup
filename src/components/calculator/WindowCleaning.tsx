@@ -56,7 +56,7 @@ const WindowCleaningCalculator = () => {
   return (
     <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 rounded-lg shadow-md dark:bg-[#282828f0] bg-[#d8d8d879]'>
       <form onSubmit={handleSubmit} className='space-y-6'>
-        <h2 className='text-3xl font-bold mb-6'>Fönsterputs Kalkylator</h2>
+        <h2 className='text-3xl font-bold mb-6'>Fönsterputs</h2>
 
         <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
           Typ av fönster:
@@ -64,7 +64,7 @@ const WindowCleaningCalculator = () => {
         <select
           value={type}
           onChange={(e) => setType(e.target.value as CleaningType)}
-          className='w-full p-2 border rounded'
+          className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
         >
           {Object.keys(cleaningTypes).map((key) => (
             <option key={key} value={key}>
@@ -85,7 +85,7 @@ const WindowCleaningCalculator = () => {
               onChange={(e) =>
                 setAmount(e.target.value ? Number(e.target.value) : undefined)
               }
-              className='w-full p-2 border rounded'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               required
             />
           </div>
@@ -101,7 +101,7 @@ const WindowCleaningCalculator = () => {
               onChange={(e) =>
                 setBleck(e.target.value ? Number(e.target.value) : undefined)
               }
-              className='w-full p-2 border rounded'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
             />
           </div>
 
@@ -116,7 +116,7 @@ const WindowCleaningCalculator = () => {
               onChange={(e) =>
                 setKarm(e.target.value ? Number(e.target.value) : undefined)
               }
-              className='w-full p-2 border rounded'
+              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
             />
           </div>
 
@@ -143,7 +143,7 @@ const WindowCleaningCalculator = () => {
 
         <button
           type='submit'
-          className='w-full py-3 rounded bg-blue-500 text-white'
+          className='w-full py-3 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300'
         >
           Skicka
         </button>

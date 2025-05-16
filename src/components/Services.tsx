@@ -41,24 +41,26 @@ export default function CleaningConstructionServices(): JSX.Element {
   ];
 
   return (
-    <section className='container mx-auto px-4 py-24'>
-      <h2 className='mb-6 md:text-center text-3xl text-gray-900 dark:text-white'>
+    <section className='mx-auto px-4 py-24 bg-[#7e7e7e4f]'>
+      <h2 className='mb-6 md:text-center text-3xl t'>
         Our Cleaning & Construction Services
       </h2>
-      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3'>
-        {services.map(({ title, description }, index) => (
-          <div
-            key={index}
-            className='relative flex flex-col rounded-lg  p-6  shadow-md transition-all duration-300 ease-in-out hover:bg-gray-200 hover:shadow-lg  dark:hover:bg-gray-700'
-          >
-            <h3 className='relative text-left text-xl text-gray-900 dark:text-white'>
-              {title}
-            </h3>
-            <p className='relative mt-2 text-gray-700 dark:text-gray-300'>
-              {description}
-            </p>
-          </div>
-        ))}
+      <div className='container mx-auto'>
+        <div className=' grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3'>
+          {services.map(({ title, description }, index) => (
+            <div
+              key={index}
+              className='relative flex flex-col rounded-lg  p-6  shadow-md transition-all duration-300 ease-in-out hover:bg-gray-200 hover:shadow-lg  dark:hover:bg-gray-700'
+            >
+              <h3 className='relative text-left text-xl text-gray-900 dark:text-white'>
+                {title}
+              </h3>
+              <p className='relative mt-2 text-gray-700 dark:text-gray-300'>
+                {description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

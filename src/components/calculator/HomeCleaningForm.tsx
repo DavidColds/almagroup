@@ -60,7 +60,7 @@ const cleaningPrices = [
 ];
 
 export default function HomeCleaningForm() {
-  const [accessOption, setAccessOption] = useState(''); // Default to empty string
+  const [accessOption, setAccessOption] = useState('');
   const [kvm, setKvm] = useState('');
   const [frequency, setFrequency] = useState('biweekly');
   const [hasPets, setHasPets] = useState(false);
@@ -144,21 +144,9 @@ export default function HomeCleaningForm() {
         onSubmit={handleSubmit}
         className='w-full max-w-5xl rounded-lg overflow-hidden'
       >
-        <div className='flex flex-col md:flex-row gap-8'>
+        <div className='flex flex-col gap-8'>
           {/* Main Form Section */}
-          <div className='flex-1 '>
-            <div className='w-16 h-0.5 mx-auto mb-6'></div>
-
-            <p className='text-sm mb-4'>
-              Låt oss börja med att förstå dina preferenser. Vill du ha mer
-              information?{' '}
-              <a href='#' className='font-medium'>
-                Läs mer
-              </a>{' '}
-              för att jämföra våra abonnemang, se uppgiftslistor och hitta svar
-              på vanliga frågor.
-            </p>
-
+          <div className=''>
             <div className='space-y-6'>
               <div className='space-y-2'>
                 <label className='text-sm font-medium'>
@@ -314,42 +302,42 @@ export default function HomeCleaningForm() {
               </p>
             </div>
           </div>
-
-          {/* Sticky Aside Section */}
-          <aside className='w-full md:w-80 p-6 sticky top-4 '>
-            <h3 className='font-medium mb-4'>Sammanfattning</h3>
-            {details ? (
-              <div className='space-y-4'>
-                <div className='flex justify-between'>
-                  <strong className='font-medium'>Storlek:</strong>{' '}
-                  {details.kvm} kvm
-                </div>
-                <div className='flex justify-between'>
-                  <strong className='font-medium'>Frekvens:</strong>{' '}
-                  {details.frequency}
-                </div>
-                <div className='flex justify-between'>
-                  <strong className='font-medium'>Husdjur:</strong>{' '}
-                  {details.hasPets ? 'Ja' : 'Nej'}
-                </div>
-                <div className='flex justify-between'>
-                  <strong className='font-medium'>Tillgång:</strong>{' '}
-                  {details.accessOption === 'home'
-                    ? 'Jag kommer att vara hemma'
-                    : details.accessOption === 'leave-key'
-                      ? 'Jag lämnar nyckeln på ert kontor'
-                      : 'Ni får mina nycklar'}
-                </div>
-                <div className='flex justify-between'>
-                  <strong className='font-medium'>Pris:</strong> {price}
-                </div>
-              </div>
-            ) : (
-              <p className='text-gray-500'>Fyll i formuläret för att se pris</p>
-            )}
-          </aside>
         </div>
       </form>
+
+      {/* Summary Section */}
+      <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700'>
+        <h3 className='text-lg font-medium mb-4'>Sammanfattning</h3>
+        {details ? (
+          <div className='space-y-4'>
+            <div className='flex justify-between'>
+              <strong className='font-medium'>Storlek:</strong> {details.kvm}{' '}
+              kvm
+            </div>
+            <div className='flex justify-between'>
+              <strong className='font-medium'>Frekvens:</strong>{' '}
+              {details.frequency}
+            </div>
+            <div className='flex justify-between'>
+              <strong className='font-medium'>Husdjur:</strong>{' '}
+              {details.hasPets ? 'Ja' : 'Nej'}
+            </div>
+            <div className='flex justify-between'>
+              <strong className='font-medium'>Tillgång:</strong>{' '}
+              {details.accessOption === 'home'
+                ? 'Jag kommer att vara hemma'
+                : details.accessOption === 'leave-key'
+                  ? 'Jag lämnar nyckeln på ert kontor'
+                  : 'Ni får mina nycklar'}
+            </div>
+            <div className='flex justify-between'>
+              <strong className='font-medium'>Pris:</strong> {price}
+            </div>
+          </div>
+        ) : (
+          <p className='text-gray-500'>Fyll i formuläret för att se pris</p>
+        )}
+      </div>
     </div>
   );
 }
