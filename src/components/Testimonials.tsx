@@ -27,7 +27,7 @@ const testimonials = [
 
 export default function Testimonials(): JSX.Element {
   return (
-    <section className='px-4 py-24 bg-[#7e7e7e4f]'>
+    <section className='px-4 py-24 bg-[#acacac4f]'>
       <div className='container mx-auto '>
         <h2 className='mb-6 text-center text-3xl font-semibold'>
           What Our Clients Say

@@ -35,7 +35,7 @@ export default function Nav() {
       <div className='container mx-auto flex items-center justify-between'>
         {/* Almagrupp Logo */}
         <Link href='/'>
-          <div className='text-[2.5rem] font-semibold tracking-tight leading-none uppercase'>
+          <div className='text-[2rem] font-semibold tracking-tight leading-none uppercase'>
             <span className='text-black dark:text-white'>Alma</span>
             <span className='text-neutral-600 dark:text-neutral-400 font-light'>
               grupp

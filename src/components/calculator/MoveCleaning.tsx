@@ -73,6 +73,9 @@ export default function MoveCleaningForm() {
     totalPrice: number;
   } | null>(null);
 
+  const [includeOven, setIncludeOven] = useState(true); // Checkbox for oven cleaning
+  const [includeFridge, setIncludeFridge] = useState(true); // Checkbox for fridge cleaning
+
   useEffect(() => {
     calculateCleaningCost();
   }, [kvm, frequency, hasPets, accessOption]);
@@ -126,6 +129,8 @@ export default function MoveCleaningForm() {
             ? 'Jag lämnar nyckeln på ert kontor'
             : 'Ni får mina nycklar'
       }
+      Ugnsrengöring: ${includeOven ? 'Ja' : 'Nej'}
+      Kyl/Frys rengöring: ${includeFridge ? 'Ja' : 'Nej'}
       Totalpris: ${details.totalPrice} SEK
     `;
 
@@ -228,6 +233,39 @@ export default function MoveCleaningForm() {
                     checked={accessOption === 'have-keys'}
                     onChange={(e) => setAccessOption(e.target.value)}
                   />
+                </label>
+              </div>
+            </div>
+
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium'>Ingår i priset</h3>
+              <div className='flex items-center space-x-6'>
+                <label className='flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={true}
+                    disabled
+                    className='mr-2 h-5 w-5 text-black accent-black'
+                  />
+                  <span>Ugnsrengöring</span>
+                </label>
+                <label className='flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={true}
+                    disabled
+                    className='mr-2 h-5 w-5 text-black accent-black'
+                  />
+                  <span>Kyl/Frys rengöring</span>
+                </label>
+                <label className='flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={true}
+                    disabled
+                    className='mr-2 h-5 w-5 text-black accent-black'
+                  />
+                  <span>Fönsterputsning</span>
                 </label>
               </div>
             </div>

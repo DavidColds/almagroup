@@ -1,56 +1,63 @@
 'use client';
-import clsx from 'clsx';
+import Link from 'next/link';
 
 interface Service {
   title: string;
   description: string;
+  link: string;
 }
 
 export default function CleaningConstructionServices(): JSX.Element {
   const services: Service[] = [
     {
-      title: 'Residential Cleaning',
+      title: 'Bygg',
       description:
-        'Thorough home cleaning services, ensuring a spotless and fresh living space.',
+        'Borttagning av byggdamm och skräp efter byggnation för att göra platsen inflyttningsklar.',
+      link: '/bygg', // Link to Bygg
     },
     {
-      title: 'Commercial Cleaning',
+      title: 'Hemstädning',
       description:
-        'Professional cleaning for offices and commercial spaces to maintain hygiene.',
+        'Noggrann städning av hemmet för att säkerställa en ren och fräsch boendemiljö.',
+      link: '/cleaning', // Link to Städning
     },
     {
-      title: 'Post-Construction Cleanup',
+      title: 'Kontorsstädning',
       description:
-        'Removing debris and dust after construction to make the site move-in ready.',
+        'Professionell städning för kontor och kommersiella utrymmen för att upprätthålla hygien.',
+      link: '/kontorsstadning', // Link to Kontorsstädning
     },
     {
-      title: 'Deep Cleaning',
+      title: 'Storstädning',
       description:
-        'A thorough top-to-bottom cleaning service for homes and businesses.',
+        'En grundlig städning från topp till tå för hem och företag.',
+      link: '/stor-stadning', // Link to Stor Städning
     },
     {
-      title: 'Floor & Carpet Cleaning',
+      title: 'Flyttstädning',
       description:
-        'Expert cleaning and maintenance for carpets, hardwood, and tile flooring.',
+        'Omfattande städtjänster för att säkerställa att ditt gamla hem är fläckfritt innan flytten.',
+      link: '/flyttstadning', // Link to Flyttstädning
     },
     {
-      title: 'Construction & Renovation',
-      description:
-        'High-quality construction and remodeling services tailored to your needs.',
+      title: 'Fönsterputsning',
+      description: 'Professionell fönsterputsning för en fläckfri glans.',
+      link: '/windowCleaning', // Link to Fönster Puts
     },
   ];
 
   return (
-    <section className='mx-auto px-4 py-24 bg-[#7e7e7e4f]'>
-      <h2 className='mb-6 md:text-center text-3xl t'>
-        Our Cleaning & Construction Services
+    <section className='mx-auto px-4 py-24 bg-[#d1d1d14f]'>
+      <h2 className='mb-6 md:text-center text-3xl'>
+        Våra Städ- och Byggtjänster
       </h2>
       <div className='container mx-auto'>
-        <div className=' grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3'>
-          {services.map(({ title, description }, index) => (
-            <div
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3'>
+          {services.map(({ title, description, link }, index) => (
+            <Link
               key={index}
-              className='relative flex flex-col rounded-lg  p-6  shadow-md transition-all duration-300 ease-in-out hover:bg-gray-200 hover:shadow-lg  dark:hover:bg-gray-700'
+              href={link}
+              className='relative flex flex-col rounded-lg p-6 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-200 hover:shadow-lg dark:hover:bg-gray-800 dark:bg-[#2929294f] group'
             >
               <h3 className='relative text-left text-xl text-gray-900 dark:text-white'>
                 {title}
@@ -58,7 +65,12 @@ export default function CleaningConstructionServices(): JSX.Element {
               <p className='relative mt-2 text-gray-700 dark:text-gray-300'>
                 {description}
               </p>
-            </div>
+              {/* Arrow Icon */}
+              <span className='text-gray-900 dark:text-white text-lg font-semibold flex items-center group-hover:translate-x-2 transition-all duration-300'>
+                Läs mer
+                <span className='ml-2 text-2xl'>&rarr;</span>
+              </span>
+            </Link>
           ))}
         </div>
       </div>

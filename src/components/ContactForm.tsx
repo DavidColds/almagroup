@@ -176,11 +176,13 @@ export default function ContactForm() {
         <div className='mt-6 text-center'>
           <button
             type='submit'
-            disabled={isSubmitting}
-            className='bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 disabled:opacity-50'
+            className='w-full py-3 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300'
           >
-            {isSubmitting ? 'Skickar...' : 'Skicka meddelande'}
+            Skicka
           </button>
+          <p className='text-xs text-center'>
+            *Alla fält måste fyllas i för att fortsätta
+          </p>
         </div>
       </form>
 

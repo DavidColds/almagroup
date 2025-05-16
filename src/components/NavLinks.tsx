@@ -1,8 +1,9 @@
 const navLinks = [
   { href: '/', label: 'Hem' },
   { href: '/bygg', label: 'Bygg' },
+  { href: '/kontorsstadning', label: 'Kontorsstädning' },
   { href: '/cleaning', label: 'Städning' },
-  { href: '/bigCleaning', label: 'Stor Städning' },
+  { href: '/stor-stadning', label: 'Stor Städning' },
   { href: '/flyttstadning', label: 'Flyttstädning' },
   { href: '/windowCleaning', label: 'Fönster Puts' },
 ];
