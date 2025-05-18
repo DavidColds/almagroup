@@ -32,9 +32,7 @@ export default function ComponentPage() {
         </div>
       </section>
 
-      <section className='w-full md:w-1/2 p-8  space-y-6 overflow-hidden'>
-        {/* Contact Form */}
-
+      <section className='w-full md:w-1/2 p-4 lg:p-8 '>
         <ContactForm />
       </section>
     </main>

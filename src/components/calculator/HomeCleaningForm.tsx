@@ -297,7 +297,7 @@ export default function HomeCleaningForm() {
               >
                 Skicka
               </button>
-              <p className='text-xs text-center'>
+              <p className='text-xs text-center pt-4'>
                 *Alla fält måste fyllas i för att fortsätta
               </p>
             </div>

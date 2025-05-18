@@ -10,22 +10,10 @@ interface Service {
 export default function CleaningConstructionServices(): JSX.Element {
   const services: Service[] = [
     {
-      title: 'Bygg',
-      description:
-        'Borttagning av byggdamm och skräp efter byggnation för att göra platsen inflyttningsklar.',
-      link: '/bygg', // Link to Bygg
-    },
-    {
       title: 'Hemstädning',
       description:
         'Noggrann städning av hemmet för att säkerställa en ren och fräsch boendemiljö.',
       link: '/cleaning', // Link to Städning
-    },
-    {
-      title: 'Kontorsstädning',
-      description:
-        'Professionell städning för kontor och kommersiella utrymmen för att upprätthålla hygien.',
-      link: '/kontorsstadning', // Link to Kontorsstädning
     },
     {
       title: 'Storstädning',
@@ -43,6 +31,18 @@ export default function CleaningConstructionServices(): JSX.Element {
       title: 'Fönsterputsning',
       description: 'Professionell fönsterputsning för en fläckfri glans.',
       link: '/windowCleaning', // Link to Fönster Puts
+    },
+    {
+      title: 'Kontorsstädning',
+      description:
+        'Professionell städning för kontor och kommersiella utrymmen för att upprätthålla hygien.',
+      link: '/kontorsstadning', // Link to Kontorsstädning
+    },
+    {
+      title: 'Bygg',
+      description:
+        'Borttagning av byggdamm och skräp efter byggnation för att göra platsen inflyttningsklar.',
+      link: '/bygg', // Link to Bygg
     },
   ];
 

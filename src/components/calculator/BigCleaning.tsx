@@ -203,7 +203,7 @@ export default function FixedPriceCalculator() {
           <label className='block text-sm font-medium mb-1 tracking-wide text-gray-700 dark:text-gray-300'>
             Välj datum
           </label>
-          <div className='relative w-full'>
+          <div className='relative w-full react-datepicker__input-container datepicker-input-width '>
             <DatePicker
               placeholderText='Välj datum'
               selected={date}

@@ -75,3 +75,14 @@
     @apply min-h-[calc(100vh-56px)];
   }
 }
+
+/* If you want to target the 3rd party class directly: */
+@layer components {
+  .react-datepicker__input-container .react-datepicker-wrapper {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  .react-datepicker__input-container input {
+    @apply w-full;
+  }
+}

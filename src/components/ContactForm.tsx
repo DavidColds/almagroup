@@ -96,7 +96,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className='max-w-4xl mx-auto py-3 md:p-6 shadow-lg rounded-lg dark:bg-[#2a2a2a] '>
+    <div className='max-w-4xl mx-auto py-3 p-2 md:p-6 shadow-lg rounded-lg dark:bg-[#2a2a2a] '>
       <h2 className='text-2xl font-semibold mb-4 text-center'>Kontakta oss</h2>
       <form onSubmit={handleSubmit}>
         <div className='grid gap-4'>
@@ -180,7 +180,7 @@ export default function ContactForm() {
           >
             Skicka
           </button>
-          <p className='text-xs text-center'>
+          <p className='text-xs text-center pt-4'>
             *Alla fält måste fyllas i för att fortsätta
           </p>
         </div>
