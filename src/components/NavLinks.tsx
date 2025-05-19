@@ -12,7 +12,7 @@ const navLinks = [
 
 export default function NavLinks({
   className = '',
-  gapClass = 'gap-12',
+  gapClass = 'gap-8',
 }: {
   className?: string;
   gapClass?: string;
@@ -25,7 +25,7 @@ export default function NavLinks({
         <a
           key={href}
           href={href}
-          className={`text-[2rem] md:text-lg text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition ${className}`}
+          className={`text-[1.6rem] md:text-lg text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition ${className}`}
         >
           {label}
         </a>

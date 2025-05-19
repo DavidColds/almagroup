@@ -8,23 +8,26 @@ import Link from 'next/link';
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
-        setIsVisible(false);
+      if (window.scrollY <= 0) {
+        setIsVisible(true); // Always show nav at the top
+      } else if (window.scrollY > lastScrollY) {
+        setIsVisible(false); // Scrolling down, hide nav
       } else {
-        setIsVisible(true);
+        setIsVisible(true); // Scrolling up, show nav
       }
-      setLastScrollY(window.scrollY);
+      lastScrollY = window.scrollY;
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -116,7 +119,6 @@ export default function Nav() {
           <NavLinks />
         </div>
         <div>
-          s
           <ThemeSwitcher />
         </div>
       </div>
