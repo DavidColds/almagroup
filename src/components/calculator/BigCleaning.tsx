@@ -97,7 +97,7 @@ export default function FixedPriceCalculator() {
     };
 
     try {
-      const res = await fetch('/api/send-cleaning-mail', {
+      const res = await fetch('/api/big-cleaning-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

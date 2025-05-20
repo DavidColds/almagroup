@@ -1,61 +1,64 @@
 'use client';
 
 import TermsAndConditions from '@/components/TermsAndConditions';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useRouter } from 'next/navigation';
 
 const cleaningPrices = [
   {
     minKvm: 10,
     maxKvm: 70,
-    prices: { fourth_week: 1050, biweekly: 1750, weekly: 3300 },
+    prices: { fourth_week: 1050, biweekly: 1750, weekly: 3300, once: 5400 },
     petFee: 200,
   },
   {
     minKvm: 71,
     maxKvm: 99,
-    prices: { fourth_week: 1200, biweekly: 2100, weekly: 3840 },
+    prices: { fourth_week: 1200, biweekly: 2100, weekly: 3840, once: 5400 },
     petFee: 200,
   },
   {
     minKvm: 100,
     maxKvm: 115,
-    prices: { fourth_week: 1350, biweekly: 2200, weekly: 4100 },
+    prices: { fourth_week: 1350, biweekly: 2200, weekly: 4100, once: 5400 },
     petFee: 200,
   },
   {
     minKvm: 116,
     maxKvm: 129,
-    prices: { fourth_week: 1450, biweekly: 2450, weekly: 4600 },
+    prices: { fourth_week: 1450, biweekly: 2450, weekly: 4600, once: 5400 },
     petFee: 200,
   },
   {
     minKvm: 130,
     maxKvm: 159,
-    prices: { fourth_week: 1600, biweekly: 2720, weekly: 5100 },
+    prices: { fourth_week: 1600, biweekly: 2720, weekly: 5100, once: 5400 },
     petFee: 300,
   },
   {
     minKvm: 160,
     maxKvm: 179,
-    prices: { fourth_week: 1750, biweekly: 3000, weekly: 5600 },
+    prices: { fourth_week: 1750, biweekly: 3000, weekly: 5600, once: 5400 },
     petFee: 300,
   },
   {
     minKvm: 180,
     maxKvm: 199,
-    prices: { fourth_week: 1950, biweekly: 3300, weekly: 6100 },
+    prices: { fourth_week: 1950, biweekly: 3300, weekly: 6100, once: 5400 },
     petFee: 300,
   },
   {
     minKvm: 200,
     maxKvm: 219,
-    prices: { fourth_week: 2100, biweekly: 3700, weekly: 6600 },
+    prices: { fourth_week: 2100, biweekly: 3700, weekly: 6600, once: 5400 },
     petFee: 300,
   },
   {
     minKvm: 220,
     maxKvm: 239,
-    prices: { fourth_week: 2290, biweekly: 4100, weekly: 7100 },
+    prices: { fourth_week: 2290, biweekly: 4100, weekly: 7100, once: 5400 },
     petFee: 300,
   },
 ];
@@ -87,11 +90,32 @@ export default function HomeCleaningForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [date, setDate] = useState<Date | null>(null);
+  const [termsError, setTermsError] = useState(false);
+
+  // Refs for focusing
+  const kvmRef = useRef<HTMLInputElement>(null);
+  const accessRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const termsRef = useRef<HTMLInputElement>(null);
+  const router = useRouter(); // Initialize useRouter
+
+  // Track touched fields for minimal feedback
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     calculateCleaningCost();
     // eslint-disable-next-line
-  }, [kvm, frequency, hasPets, accessOption]);
+  }, [kvm, frequency, hasPets, accessOption, date]);
+
+  const isWeekend = (date: Date | null) => {
+    if (!date) return false;
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  };
 
   const calculateCleaningCost = () => {
     const numericKvm = parseInt(kvm, 10);
@@ -117,21 +141,29 @@ export default function HomeCleaningForm() {
 
     const basePrice = tier.prices[frequency as keyof typeof tier.prices];
     const petFee = hasPets ? tier.petFee : 0;
-    const totalPrice = basePrice + petFee;
+    const weekendFee = isWeekend(date) ? 500 : 0;
+    const totalPrice = basePrice + petFee + weekendFee;
 
     setPrice(`${totalPrice} SEK`);
     setDetails({ kvm, frequency, hasPets, accessOption, totalPrice });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Step 3 validation
+    const termsValidation = validateStep3();
+    if (termsValidation) {
+      setTermsError(true);
+      termsRef.current?.focus();
+      return;
+    }
+    setTermsError(false);
+
     if (!details || !accessOption || !name || !email || !phone) {
-      alert('Fyll i alla obligatoriska fält innan du skickar formuläret.');
       return;
     }
 
-    // Prepare email content
     const emailContent = `
       Namn: ${name}
       E-post: ${email}
@@ -146,13 +178,49 @@ export default function HomeCleaningForm() {
             ? 'Jag lämnar nyckeln på ert kontor'
             : 'Ni får mina nycklar'
       }
+      Datum: ${date ? date.toLocaleDateString() : ''}
       Totalpris: ${details.totalPrice} SEK
     `;
 
-    console.log('Email Content:', emailContent);
-
-    alert(`Formuläret har skickats!\n\n${emailContent}`);
+    try {
+      const res = await fetch('/api/cleaning-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          kvm: details.kvm,
+          frequency: frequencyLabels[details.frequency] || details.frequency,
+          hasPets: details.hasPets ? 'Ja' : 'Nej',
+          accessOption:
+            details.accessOption === 'home'
+              ? 'Jag kommer att vara hemma'
+              : details.accessOption === 'leave-key'
+                ? 'Jag lämnar nyckeln på ert kontor'
+                : 'Ni får mina nycklar',
+          date: date ? date.toLocaleDateString() : '',
+          totalPrice: `${details.totalPrice} SEK`,
+          emailContent,
+        }),
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        router.push('/thank-you'); // Redirect to thank-you page
+      } else {
+        alert('Något gick fel. Försök igen.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      alert('Serverfel. Kunde inte skicka formuläret.');
+    }
   };
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const emailIsValid = validateEmail(email);
 
   // Step validation
   const canGoNextStep1 =
@@ -161,7 +229,56 @@ export default function HomeCleaningForm() {
     parseInt(kvm, 10) < 240 &&
     frequency &&
     accessOption;
-  const canGoNextStep2 = name && email && phone;
+  const canGoNextStep2 = name && email && phone && emailIsValid;
+
+  // Step 1 validation
+  function validateStep1() {
+    if (!kvm || parseInt(kvm, 10) < 10 || parseInt(kvm, 10) > 239) {
+      return { field: 'kvm', message: 'Ange giltig bostadsarea (10-239 kvm).' };
+    }
+    if (!frequency) {
+      return {
+        field: 'frequency',
+        message: 'Välj hur ofta du vill ha städning.',
+      };
+    }
+    if (!date) {
+      return { field: 'date', message: 'Välj ett datum.' };
+    }
+    if (!accessOption) {
+      return { field: 'access', message: 'Välj tillgång till hemmet.' };
+    }
+    return null;
+  }
+
+  // Step 2 validation
+  function validateStep2({
+    name,
+    email,
+    phone,
+  }: {
+    name: string;
+    email: string;
+    phone: string;
+  }) {
+    if (!name) return { field: 'name', message: 'Namn är obligatoriskt.' };
+    if (!email) return { field: 'email', message: 'E-post är obligatoriskt.' };
+    if (!validateEmail(email))
+      return { field: 'email', message: 'Ange en giltig e-postadress.' };
+    if (!phone) return { field: 'phone', message: 'Telefon är obligatoriskt.' };
+    return null;
+  }
+
+  // Step 3 validation (terms)
+  function validateStep3() {
+    if (!accepted) {
+      return {
+        field: 'terms',
+        message: 'Du måste godkänna villkoren för att fortsätta.',
+      };
+    }
+    return null;
+  }
 
   return (
     <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 rounded-lg shadow-md dark:bg-[#282828f0] bg-[#eeeeee79]'>
@@ -180,18 +297,27 @@ export default function HomeCleaningForm() {
                   <br />
                   <span className='text-xs text-gray-500'>(obligatorisk)</span>
                 </label>
-
                 <input
+                  ref={kvmRef}
                   type='number'
                   inputMode='numeric'
                   min={10}
                   max={239}
                   value={kvm}
                   onChange={(e) => setKvm(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, kvm: true }))}
                   className='mx-1 w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
                   placeholder='Ange kvm'
                   required
                 />
+                {touched.kvm &&
+                  (!kvm ||
+                    parseInt(kvm, 10) < 10 ||
+                    parseInt(kvm, 10) > 239) && (
+                    <span className='text-xs text-red-600'>
+                      Obligatoriskt fält (10-239 kvm)
+                    </span>
+                  )}
               </div>
 
               <div className='space-y-2'>
@@ -272,22 +398,32 @@ export default function HomeCleaningForm() {
               </div>
 
               <div className='pt-6 mt-6'>
-                <h2 className='text-lg font-medium mb-4'>Om ditt hem</h2>
+                <h2 className='text-lg font-medium mb-4'>Välj datum </h2>
 
-                <div className='space-y-2 mb-6'>
-                  <div className='flex items-center'>
-                    <label className='text-sm font-medium'>
-                      Finns det något du vill informera oss om angående ditt
-                      hem?
-                    </label>
+                <div className='w-full'>
+                  <label className='block text-sm font-medium mb-1 tracking-wide text-gray-700 dark:text-gray-300'>
+                    Välj datum
+                  </label>
+                  <div className='relative w-full'>
+                    <DatePicker
+                      placeholderText='Välj datum'
+                      selected={date}
+                      onChange={(date) => setDate(date)}
+                      onBlur={() => setTouched((t) => ({ ...t, date: true }))}
+                      dateFormat='yyyy-MM-dd'
+                      className='w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                      calendarClassName='!w-full'
+                      wrapperClassName='w-full'
+                    />
                   </div>
-                  <textarea
-                    className='w-full p-3 border rounded'
-                    placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
-                  ></textarea>
+                  {isWeekend(date) && (
+                    <p className='text-sm text-red-600 mt-2 '>
+                      OBS! Städning på helg tillkommer en avgift på 500 SEK.
+                    </p>
+                  )}
                 </div>
 
-                <div className='space-y-2'>
+                <div className='space-y-2 pt-4'>
                   <label className='text-sm font-medium'>
                     Tillgång till ditt hem*
                     <br />
@@ -337,8 +473,17 @@ export default function HomeCleaningForm() {
                 <button
                   type='button'
                   className='px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none transition disabled:opacity-50'
-                  onClick={() => setStep(2)}
-                  disabled={!canGoNextStep1}
+                  onClick={() => {
+                    const error = validateStep1();
+                    if (error) {
+                      // Focus the problematic field
+                      if (error.field === 'kvm') kvmRef.current?.focus();
+                      if (error.field === 'date') dateRef.current?.focus();
+                      if (error.field === 'access') accessRef.current?.focus();
+                      return;
+                    }
+                    setStep(2);
+                  }}
                 >
                   Nästa
                 </button>
@@ -363,10 +508,17 @@ export default function HomeCleaningForm() {
                   type='text'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, name: true }))}
                   className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
                   placeholder='Ditt namn'
                   required
+                  ref={nameRef}
                 />
+                {touched.name && !name && (
+                  <span className='text-xs text-red-600'>
+                    Obligatoriskt fält
+                  </span>
+                )}
               </div>
               <div>
                 <label
@@ -382,10 +534,19 @@ export default function HomeCleaningForm() {
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                  onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                  className={`w-full rounded-xl border ${email && !emailIsValid ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]`}
                   placeholder='din@email.se'
                   required
+                  ref={emailRef}
                 />
+                {touched.email && (!email || !emailIsValid) && (
+                  <span className='text-xs text-red-600'>
+                    {!email
+                      ? 'Obligatoriskt fält'
+                      : 'Ange en giltig e-postadress'}
+                  </span>
+                )}
               </div>
               <div>
                 <label
@@ -401,10 +562,31 @@ export default function HomeCleaningForm() {
                   type='tel'
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                   className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
                   placeholder='070-123 45 67'
                   required
+                  ref={phoneRef}
                 />
+                {touched.phone && !phone && (
+                  <span className='text-xs text-red-600'>
+                    Obligatoriskt fält
+                  </span>
+                )}
+              </div>
+
+              <h2 className='text-lg font-medium mb-4'>Om ditt hem</h2>
+
+              <div className='space-y-2 mb-6'>
+                <div className='flex items-center'>
+                  <label className='text-sm font-medium'>
+                    Finns det något du vill informera oss om angående ditt hem?
+                  </label>
+                </div>
+                <textarea
+                  className='w-full p-3 border rounded text-black'
+                  placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
+                ></textarea>
               </div>
               <div className='flex justify-between gap-2 pt-6'>
                 <button
@@ -417,8 +599,17 @@ export default function HomeCleaningForm() {
                 <button
                   type='button'
                   className='px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none transition disabled:opacity-50'
-                  onClick={() => setStep(3)}
-                  disabled={!canGoNextStep2}
+                  onClick={() => {
+                    const error = validateStep2({ name, email, phone });
+                    if (error) {
+                      // Focus the problematic field
+                      if (error.field === 'name') nameRef.current?.focus();
+                      if (error.field === 'email') emailRef.current?.focus();
+                      if (error.field === 'phone') phoneRef.current?.focus();
+                      return;
+                    }
+                    setStep(3);
+                  }}
                 >
                   Nästa
                 </button>
@@ -470,7 +661,20 @@ export default function HomeCleaningForm() {
                   Fyll i formuläret för att se pris
                 </p>
               )}
-              <TermsAndConditions checked={accepted} onChange={setAccepted} />
+              <TermsAndConditions
+                checked={accepted}
+                onChange={(val) => {
+                  setAccepted(val);
+                  setTermsError(false);
+                }}
+                ref={termsRef}
+                error={termsError}
+              />
+              {termsError && (
+                <span className='text-xs text-red-600'>
+                  Du måste godkänna villkoren för att fortsätta.
+                </span>
+              )}
               <div className='flex justify-between gap-2 pt-6'>
                 <button
                   type='button'
@@ -482,7 +686,7 @@ export default function HomeCleaningForm() {
                 <button
                   type='submit'
                   className='px-6 py-2 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300'
-                  disabled={!accepted}
+                  disabled={!accepted || !validateEmail(email)}
                 >
                   Skicka
                 </button>

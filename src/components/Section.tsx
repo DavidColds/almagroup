@@ -26,7 +26,7 @@ export default function Section({
         ],
         image: '/images/clean1.jpg',
         reverse: false,
-        ctaLink: '/storstadning',
+        ctaLink: '/stor-stadning',
         ctaText: 'Boka Storstädning',
       },
       {
@@ -56,7 +56,7 @@ export default function Section({
         ],
         image: '/images/clean2.jpg',
         reverse: false,
-        ctaLink: '/hemstadning',
+        ctaLink: '/cleaning',
         ctaText: 'Boka Hemstädning',
       },
     ],

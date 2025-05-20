@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 
 interface TermsAndConditionsProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
+  error?: boolean;
 }
 
-export default function TermsAndConditions({
-  checked,
-  onChange,
-}: TermsAndConditionsProps) {
+const TermsAndConditions = forwardRef<
+  HTMLInputElement,
+  TermsAndConditionsProps
+>(({ checked, onChange, error }, ref) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -19,7 +20,8 @@ export default function TermsAndConditions({
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
           required
-          className='accent-blue-600'
+          className={`accent-blue-600 ${error ? 'ring-2 ring-red-500' : ''}`}
+          ref={ref}
         />
         <span>
           Jag godkänner{' '}
@@ -338,7 +340,7 @@ export default function TermsAndConditions({
                 </li>
                 <li>
                   <strong>AVTALSTID OCH UPPSÄGNING</strong>
-                  <ul className='list-disc pl-5'>
+                  <ul className='list-decimal pl-5'>
                     <li>
                       11A. För att säga upp avtalet måste kunden meddela ALMA
                       Grupp AB med två (2) månader i förväg, och detta kan
@@ -349,7 +351,7 @@ export default function TermsAndConditions({
                 </li>
                 <li>
                   <strong>INTEGRITET</strong>
-                  <ul className='list-disc pl-5'>
+                  <ul className='list-decimal pl-5'>
                     <li>
                       12A. Vi skyddar dina personuppgifter enligt vår
                       internetpolicy
@@ -363,4 +365,6 @@ export default function TermsAndConditions({
       )}
     </div>
   );
-}
+});
+
+export default TermsAndConditions;
