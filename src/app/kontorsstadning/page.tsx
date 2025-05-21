@@ -1,6 +1,6 @@
 'use client';
 
-import ContactForm from '@/components/ContactForm';
+import OfficeClean from '@/components/OfficeClean';
 import React from 'react';
 
 export default function ComponentPage() {
@@ -28,7 +28,7 @@ export default function ComponentPage() {
         </div>
       </section>
       <section className='w-full md:w-1/2 p-8 space-y-6 overflow-hidden'>
-        <ContactForm />
+        <OfficeClean />
       </section>
     </main>
   );
