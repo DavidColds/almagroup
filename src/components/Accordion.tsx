@@ -27,7 +27,7 @@ export default function Accordion({
       </button>
       <div
         id={title.replace(/\s/g, '') + '-content'}
-        className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 py-2' : 'max-h-0 py-0'}`}
+        className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 pt-2 pb-6' : 'max-h-0 py-0'}`}
         aria-hidden={!isOpen}
       >
         {isOpen && (

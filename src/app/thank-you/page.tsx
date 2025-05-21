@@ -10,7 +10,7 @@ export default function ThankYou() {
     <main>
       <section>
         <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
-          <h1 className='mt-8 text-5xl font-bold text-green-600 md:text-7xl'>
+          <h1 className='mt-8 text-5xl font-bold text-gray-400 md:text-7xl'>
             Tack!
           </h1>
           <p className='mt-4 text-xl md:text-2xl'>
