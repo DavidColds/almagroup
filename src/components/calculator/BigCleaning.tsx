@@ -140,12 +140,12 @@ export default function FixedPriceCalculator() {
       <h2 className='text-3xl font-bold mb-6'>Stor Städning</h2>
       <form onSubmit={handleSubmit} className='space-y-6'>
         <div className='w-full'>
-          <label className='block text-m  font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
-            Bostadens storlek (kvm)
+          <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+            Bostadens storlek (kvm) <span className='text-red-500'>*</span>
           </label>
-          <span className='text-s text-gray-500 pb-2 block mb-2'>
+          <span className='block text-xs text-gray-500 mb-2'>
             (obligatorisk)
-          </span>{' '}
+          </span>
           <input
             type='text'
             inputMode='numeric'
@@ -154,77 +154,70 @@ export default function FixedPriceCalculator() {
             onChange={(e) => setKvm(e.target.value)}
             placeholder='Ex. 75'
             required
-            className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+            className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
           />
         </div>
 
         <div className='space-y-4'>
-          <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+          <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
             <span>Ugnsrengöring (+279 SEK)</span>
             <input
               type='checkbox'
               checked={includeOven}
               onChange={() => setIncludeOven(!includeOven)}
-              className=' h-5 w-5 text-gray-600'
+              className='h-5 w-5 text-gray-600'
             />
           </label>
-          <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+          <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
             <span>Kyl/Frys rengöring (+279 SEK)</span>
             <input
               type='checkbox'
               checked={includeFridge}
               onChange={() => setIncludeFridge(!includeFridge)}
-              className=' h-5 w-5 text-gray-600'
+              className='h-5 w-5 text-gray-600'
             />
           </label>
         </div>
 
         <div className='space-y-4'>
-          <h3 className='text-xl font-bold'>Kontaktuppgifter</h3>
+          <h3 className='text-lg font-bold text-gray-800 dark:text-gray-200 mb-2'>
+            Kontaktuppgifter
+          </h3>
           <div>
-            <label className='block text-m  font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
-              Namn
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Namn <span className='text-red-500'>*</span>
             </label>
-            <span className='text-s text-gray-500 pb-2 block mb-2'>
-              (obligatorisk)
-            </span>{' '}
             <input
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
               placeholder='Ditt namn'
               required
             />
           </div>
           <div>
-            <label className='block text-m  font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
-              Email
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Email <span className='text-red-500'>*</span>
             </label>
-            <span className='text-s text-gray-500 pb-2 block mb-2'>
-              (obligatorisk)
-            </span>{' '}
             <input
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
               placeholder='Din email'
               required
             />
           </div>
           <div>
-            <label className='block text-m  font-medium text-gray-700 dark:text-gray-300 mb-1 tracking-wide'>
-              Telefonnummer
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Telefonnummer <span className='text-red-500'>*</span>
             </label>
-            <span className='text-s text-gray-500 pb-2 block mb-2'>
-              (obligatorisk)
-            </span>{' '}
             <input
               type='tel'
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
               placeholder='Ditt telefonnummer'
               required
             />
@@ -232,20 +225,20 @@ export default function FixedPriceCalculator() {
         </div>
 
         <div className='w-full'>
-          <label className='block text-m  font-medium mb-1 tracking-wide text-gray-700 dark:text-gray-300'>
-            Välj önskat datum
+          <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
+            Välj önskat datum <span className='text-red-500'>*</span>
           </label>
-          <span className='text-s text-gray-500 pb-2 block mb-2'>
+          <span className='block text-xs text-gray-500 mb-2'>
             (obligatorisk)
-          </span>{' '}
-          <div className='relative w-full react-datepicker__input-container datepicker-input-width '>
+          </span>
+          <div className='relative w-full react-datepicker__input-container datepicker-input-width'>
             <DatePicker
               required
               placeholderText='Välj önskat datum'
               selected={date}
               onChange={(date) => setDate(date)}
               dateFormat='yyyy-MM-dd'
-              className='w-full rounded-md border border-gray-300 px-4 py-3 text-m  text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+              className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
             />
           </div>
           {isWeekend(date) && (
@@ -262,7 +255,7 @@ export default function FixedPriceCalculator() {
               <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
                 {price}
               </div>
-              <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3 max-w-md mx-auto'>
+              <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3  mx-auto'>
                 <div>
                   <span className='font-semibold'>Bostadens storlek:</span>{' '}
                   {kvm} kvm

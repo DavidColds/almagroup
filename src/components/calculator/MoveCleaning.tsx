@@ -1,84 +1,69 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import TermsAndConditions from '@/components/TermsAndConditions';
+import { useState, useEffect, useRef } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useRouter } from 'next/navigation';
 
 const cleaningPrices = [
-  {
-    minKvm: 10,
-    maxKvm: 70,
-    prices: { fourth_week: 1050, biweekly: 1750, weekly: 3300 },
-    petFee: 200,
-  },
-  {
-    minKvm: 71,
-    maxKvm: 99,
-    prices: { fourth_week: 1200, biweekly: 2100, weekly: 3840 },
-    petFee: 200,
-  },
-  {
-    minKvm: 100,
-    maxKvm: 115,
-    prices: { fourth_week: 1350, biweekly: 2200, weekly: 4100 },
-    petFee: 200,
-  },
-  {
-    minKvm: 116,
-    maxKvm: 129,
-    prices: { fourth_week: 1450, biweekly: 2450, weekly: 4600 },
-    petFee: 200,
-  },
-  {
-    minKvm: 130,
-    maxKvm: 159,
-    prices: { fourth_week: 1600, biweekly: 2720, weekly: 5100 },
-    petFee: 300,
-  },
-  {
-    minKvm: 160,
-    maxKvm: 179,
-    prices: { fourth_week: 1750, biweekly: 3000, weekly: 5600 },
-    petFee: 300,
-  },
-  {
-    minKvm: 180,
-    maxKvm: 199,
-    prices: { fourth_week: 1950, biweekly: 3300, weekly: 6100 },
-    petFee: 300,
-  },
-  {
-    minKvm: 200,
-    maxKvm: 219,
-    prices: { fourth_week: 2100, biweekly: 3700, weekly: 6600 },
-    petFee: 300,
-  },
-  {
-    minKvm: 220,
-    maxKvm: 239,
-    prices: { fourth_week: 2290, biweekly: 4100, weekly: 7100 },
-    petFee: 300,
-  },
+  { minKvm: 0, maxKvm: 30, price: 1795 },
+  { minKvm: 31, maxKvm: 40, price: 1995 },
+  { minKvm: 41, maxKvm: 50, price: 2195 },
+  { minKvm: 51, maxKvm: 60, price: 2395 },
+  { minKvm: 61, maxKvm: 70, price: 2595 },
+  { minKvm: 71, maxKvm: 80, price: 2795 },
+  { minKvm: 81, maxKvm: 90, price: 2995 },
+  { minKvm: 91, maxKvm: 100, price: 3195 },
+  { minKvm: 101, maxKvm: 110, price: 3395 },
+  { minKvm: 111, maxKvm: 120, price: 3595 },
+  { minKvm: 121, maxKvm: 130, price: 3795 },
+  { minKvm: 131, maxKvm: 140, price: 3995 },
+  { minKvm: 141, maxKvm: 150, price: 4195 },
+  { minKvm: 151, maxKvm: 160, price: 4395 },
+  { minKvm: 161, maxKvm: 170, price: 4595 },
+  { minKvm: 171, maxKvm: 180, price: 4795 },
+  { minKvm: 181, maxKvm: 190, price: 4995 },
+  { minKvm: 191, maxKvm: 200, price: 5195 },
+  { minKvm: 201, maxKvm: 210, price: 5395 },
+  { minKvm: 211, maxKvm: 220, price: 5595 },
+  { minKvm: 221, maxKvm: 230, price: 5795 },
+  { minKvm: 231, maxKvm: 240, price: 5995 },
 ];
+
+function isWeekend(date: Date | null) {
+  if (!date) return false;
+  const day = date.getDay();
+  return day === 0 || day === 6;
+}
 
 export default function MoveCleaningForm() {
   const [accessOption, setAccessOption] = useState('');
   const [kvm, setKvm] = useState('');
-  const [frequency, setFrequency] = useState('biweekly');
   const [hasPets, setHasPets] = useState(false);
   const [price, setPrice] = useState<string | null>(null);
   const [details, setDetails] = useState<{
     kvm: string;
-    frequency: string;
     hasPets: boolean;
     accessOption: string;
     totalPrice: number;
   } | null>(null);
 
-  const [includeOven, setIncludeOven] = useState(true); // Checkbox for oven cleaning
-  const [includeFridge, setIncludeFridge] = useState(true); // Checkbox for fridge cleaning
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState<Date | null>(null);
+  const [extraInfo, setExtraInfo] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [termsError, setTermsError] = useState(false);
+  const termsRef = useRef<HTMLInputElement>(null); // Use useRef for ref
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     calculateCleaningCost();
-  }, [kvm, frequency, hasPets, accessOption]);
+    // eslint-disable-next-line
+  }, [kvm, hasPets, accessOption]);
 
   const calculateCleaningCost = () => {
     const numericKvm = parseInt(kvm, 10);
@@ -87,7 +72,7 @@ export default function MoveCleaningForm() {
       setDetails(null);
       return;
     }
-    if (numericKvm >= 240) {
+    if (numericKvm > 240) {
       setPrice('Kontakta oss för pris');
       setDetails(null);
       return;
@@ -102,25 +87,36 @@ export default function MoveCleaningForm() {
       return;
     }
 
-    const basePrice = tier.prices[frequency as keyof typeof tier.prices];
-    const petFee = hasPets ? tier.petFee : 0;
-    const totalPrice = basePrice + petFee;
-
+    const totalPrice = tier.price;
     setPrice(`${totalPrice} SEK`);
-    setDetails({ kvm, frequency, hasPets, accessOption, totalPrice });
+    setDetails({ kvm, hasPets, accessOption, totalPrice });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!details || !accessOption) {
-      alert('Fyll i alla obligatoriska fält innan du skickar formuläret.');
+    setTermsError(false);
+
+    if (!accepted) {
+      setTermsError(true);
+      termsRef.current?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
+    if (!details || !accessOption || !name || !email || !phone) {
+      alert('Fyll i alla obligatoriska fält.');
+      return;
+    }
+
+    setLoading(true); // <-- Start loading
+
+    const formattedDate = date ? date.toLocaleDateString('sv-SE') : '';
+
     const emailContent = `
+      Namn: ${name}
+      E-post: ${email}
+      Telefon: ${phone}
       Bostadsarea: ${details.kvm} kvm
-      Frekvens: ${details.frequency}
       Husdjur: ${details.hasPets ? 'Ja' : 'Nej'}
       Tillgång till hemmet: ${
         details.accessOption === 'home'
@@ -129,29 +125,67 @@ export default function MoveCleaningForm() {
             ? 'Jag lämnar nyckeln på ert kontor'
             : 'Ni får mina nycklar'
       }
-      Ugnsrengöring: ${includeOven ? 'Ja' : 'Nej'}
-      Kyl/Frys rengöring: ${includeFridge ? 'Ja' : 'Nej'}
+      Datum: ${formattedDate}
       Totalpris: ${details.totalPrice} SEK
     `;
 
-    console.log('Email Content:', emailContent);
-
-    alert(`Formuläret har skickats!\n\n${emailContent}`);
+    try {
+      const res = await fetch('/api/move-cleaning-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          kvm: details.kvm,
+          hasPets: details.hasPets ? 'Ja' : 'Nej',
+          accessOption:
+            details.accessOption === 'home'
+              ? 'Jag kommer att vara hemma'
+              : details.accessOption === 'leave-key'
+                ? 'Jag lämnar nyckeln på ert kontor'
+                : 'Ni får mina nycklar',
+          date: formattedDate,
+          totalPrice: `${details.totalPrice} SEK`,
+          emailContent,
+        }),
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        setTimeout(() => {
+          setLoading(false); // <-- Stop loading after delay
+          router.push('/thank-you');
+        }, 500); // Optional: short delay for smoothness
+      } else {
+        setLoading(false); // <-- Stop loading on error
+        alert('Något gick fel. Försök igen.');
+      }
+    } catch (err) {
+      setLoading(false); // <-- Stop loading on error
+      console.error('Error submitting form:', err);
+      alert('Serverfel. Kunde inte skicka formuläret.');
+    }
   };
 
   return (
     <div className='w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 rounded-lg shadow-md dark:bg-[#282828f0] bg-[#d8d8d879]'>
-      <h2 className='text-3xl font-bold mb-6'>Flyttstädning</h2>
+      <h2 className='text-3xl font-bold mb-8 text-center'>Flyttstädning</h2>
 
       <form
         onSubmit={handleSubmit}
-        className='w-full max-w-5xl rounded-lg overflow-hidden'
+        className='w-full container rounded-lg overflow-hidden'
       >
-        <div className='flex flex-col gap-8'>
+        <div className='flex flex-col gap-10'>
           {/* Main Form Section */}
           <div className='space-y-6'>
-            <div className='space-y-2'>
-              <label className='text-sm font-medium'>Bostadsarea (kvm)*</label>
+            {/* KVM */}
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Bostadsarea (kvm) <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
               <input
                 type='number'
                 inputMode='numeric'
@@ -159,63 +193,98 @@ export default function MoveCleaningForm() {
                 max={239}
                 value={kvm}
                 onChange={(e) => setKvm(e.target.value)}
-                className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
                 placeholder='Ange kvm'
                 required
               />
             </div>
 
-            <div className='space-y-2'>
-              <div className='flex items-center'>
-                <label className='text-sm font-medium'>
-                  Har du några husdjur?*
-                </label>
-              </div>
-              <label className='flex items-center'>
+            {/* Husdjur */}
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Har du några husdjur?
+              </label>
+              <label className='inline-flex items-center mt-1 text-base'>
                 <input
                   type='checkbox'
                   checked={hasPets}
                   onChange={() => setHasPets(!hasPets)}
-                  className='mr-2'
+                  className='mr-2 h-5 w-5 accent-black'
                 />
-                <span>Ja</span>
+                Ja
               </label>
             </div>
 
-            <h2 className='text-lg font-medium mb-4'>Om ditt hem</h2>
-
-            <div className='space-y-2 mb-6'>
-              <div className='flex items-center'>
-                <label className='text-sm font-medium'>
-                  Behöver vi någon övrig information?
+            {/* Kontaktuppgifter */}
+            <div className='space-y-4'>
+              <h3 className='text-lg font-bold text-gray-800 dark:text-gray-200 mb-2'>
+                Kontaktuppgifter
+              </h3>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Namn <span className='text-red-500'>*</span>
                 </label>
+                <input
+                  type='text'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                  placeholder='Ditt namn'
+                  required
+                />
               </div>
-              <textarea
-                className='w-full p-3 border rounded'
-                placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
-              ></textarea>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Email <span className='text-red-500'>*</span>
+                </label>
+                <input
+                  type='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                  placeholder='Din email'
+                  required
+                />
+              </div>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Telefonnummer <span className='text-red-500'>*</span>
+                </label>
+                <input
+                  type='tel'
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                  placeholder='Ditt telefonnummer'
+                  required
+                />
+              </div>
             </div>
 
-            <div className='space-y-2'>
-              <label className='text-sm font-medium'>
-                Tillgång till ditt hem*
+            {/* Om ditt hem */}
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Tillgång till ditt hem <span className='text-red-500'>*</span>
               </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
               <div className='flex flex-col gap-2'>
-                <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-900 dark:text-white'>
                   Jag kommer att vara hemma
                   <input
-                    className=' h-5 w-5 text-gray-600'
+                    className='h-5 w-5 text-gray-600'
                     type='radio'
                     value='home'
                     checked={accessOption === 'home'}
                     onChange={(e) => setAccessOption(e.target.value)}
                   />
                 </label>
-                <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-900 dark:text-white'>
                   Jag lämnar nyckeln på ert kontor senast kl. 12 två arbetsdagar
                   innan
                   <input
-                    className=' h-5 w-5 text-gray-600'
+                    className='h-5 w-5 text-gray-600'
                     type='radio'
                     name='access'
                     value='leave-key'
@@ -223,10 +292,10 @@ export default function MoveCleaningForm() {
                     onChange={(e) => setAccessOption(e.target.value)}
                   />
                 </label>
-                <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-900 dark:text-white'>
                   Ni får mina nycklar
                   <input
-                    className=' h-5 w-5 text-gray-600'
+                    className='h-5 w-5 text-gray-600'
                     type='radio'
                     name='access'
                     value='have-keys'
@@ -237,85 +306,189 @@ export default function MoveCleaningForm() {
               </div>
             </div>
 
-            <div className='space-y-4'>
-              <h3 className='text-lg font-medium'>Ingår i priset</h3>
-              <div className='flex items-center space-x-6'>
-                <label className='flex items-center'>
+            {/* Datum */}
+            <div>
+              <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
+                Välj önskat datum <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
+              <div className='relative w-full react-datepicker__input-container datepicker-input-width'>
+                <DatePicker
+                  required
+                  placeholderText='Välj önskat datum'
+                  selected={date}
+                  onChange={(date) => setDate(date)}
+                  dateFormat='yyyy-MM-dd'
+                  className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                />
+              </div>
+              {isWeekend(date) && (
+                <div className='text-xs text-red-600 mt-1'>
+                  OBS! Städning på helg tillkommer en avgift på 500 SEK.
+                </div>
+              )}
+            </div>
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Tillgång till ditt hem <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
+              <div className='flex flex-col gap-2'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                  Jag kommer att vara hemma
                   <input
-                    type='checkbox'
-                    checked={true}
-                    disabled
-                    className='mr-2 h-5 w-5 text-black accent-black'
+                    className='h-5 w-5 text-gray-600'
+                    type='radio'
+                    name='access'
+                    value='home'
+                    checked={accessOption === 'home'}
+                    onChange={(e) => setAccessOption(e.target.value)}
                   />
-                  <span>Ugnsrengöring</span>
                 </label>
-                <label className='flex items-center'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                  Jag lämnar nyckeln på ert kontor senast kl. 12 två arbetsdagar
+                  innan
                   <input
-                    type='checkbox'
-                    checked={true}
-                    disabled
-                    className='mr-2 h-5 w-5 text-black accent-black'
+                    className='h-5 w-5 text-gray-600'
+                    type='radio'
+                    name='access'
+                    value='leave-key'
+                    checked={accessOption === 'leave-key'}
+                    onChange={(e) => setAccessOption(e.target.value)}
                   />
-                  <span>Kyl/Frys rengöring</span>
                 </label>
-                <label className='flex items-center'>
+                <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                  Ni får mina nycklar
                   <input
-                    type='checkbox'
-                    checked={true}
-                    disabled
-                    className='mr-2 h-5 w-5 text-black accent-black'
+                    className='h-5 w-5 text-gray-600'
+                    type='radio'
+                    name='access'
+                    value='have-keys'
+                    checked={accessOption === 'have-keys'}
+                    onChange={(e) => setAccessOption(e.target.value)}
                   />
-                  <span>Fönsterputsning</span>
                 </label>
               </div>
             </div>
+            {/* Övrig info */}
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Behöver vi någon övrig information?
+              </label>
+              <textarea
+                className='w-full p-3 border rounded-lg text-base text-black'
+                placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
+                value={extraInfo}
+                onChange={(e) => setExtraInfo(e.target.value)}
+              ></textarea>
+            </div>
           </div>
-
-          <button
-            type='submit'
-            className='w-full py-3 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300'
-          >
-            Skicka
-          </button>
-          <p className='text-xs text-center pt-4'>
-            *Alla fält måste fyllas i för att fortsätta
-          </p>
         </div>
-      </form>
 
-      {/* Summary Section */}
-      <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700'>
-        <h3 className='font-medium mb-4'>Sammanfattning</h3>
-        {details ? (
-          <div className='space-y-4'>
-            <div className='flex justify-between'>
-              <strong className='font-medium'>Storlek:</strong> {details.kvm}{' '}
-              kvm
-            </div>
-            <div className='flex justify-between'>
-              <strong className='font-medium'>Frekvens:</strong>{' '}
-              {details.frequency}
-            </div>
-            <div className='flex justify-between'>
-              <strong className='font-medium'>Husdjur:</strong>{' '}
-              {details.hasPets ? 'Ja' : 'Nej'}
-            </div>
-            <div className='flex justify-between'>
-              <strong className='font-medium'>Tillgång:</strong>{' '}
-              {details.accessOption === 'home'
-                ? 'Jag kommer att vara hemma'
-                : details.accessOption === 'leave-key'
-                  ? 'Jag lämnar nyckeln på ert kontor'
-                  : 'Ni får mina nycklar'}
-            </div>
-            <div className='flex justify-between'>
-              <strong className='font-medium'>Pris:</strong> {price}
-            </div>
-          </div>
-        ) : (
-          <p className='text-gray-500'>Fyll i formuläret för att se pris</p>
-        )}
-      </div>
+        {/* Summary Section */}
+        <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center'>
+          <h3 className='text-lg font-bold mb-4'>Totalt pris</h3>
+          {price ? (
+            <>
+              <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
+                {price}
+              </div>
+              <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3  mx-auto'>
+                <div>
+                  <span className='font-semibold'>Bostadens storlek:</span>{' '}
+                  {kvm} kvm
+                </div>
+                <div>
+                  <span className='font-semibold'>Ugnsrengöring:</span> Ja
+                </div>
+                <div>
+                  <span className='font-semibold'>Kyl/Frys rengöring:</span> Ja
+                </div>
+                <div>
+                  <span className='font-semibold'>Fönsterputsning:</span> Ja
+                </div>
+                <div>
+                  <span className='font-semibold'>Önskat datum:</span>{' '}
+                  {date ? date.toLocaleDateString('sv-SE') : ''}
+                  {isWeekend(date) && (
+                    <span className='text-red-600'>
+                      {' '}
+                      (Helgtillägg +500 SEK)
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <span className='font-semibold'>Namn:</span> {name}
+                </div>
+                <div>
+                  <span className='font-semibold'>E-post:</span> {email}
+                </div>
+                <div>
+                  <span className='font-semibold'>Telefon:</span> {phone}
+                </div>
+                {extraInfo && (
+                  <div>
+                    <span className='font-semibold'>Övrig info:</span>{' '}
+                    {extraInfo}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className='text-gray-500'>Fyll i bostadens storlek</div>
+          )}
+        </div>
+
+        {/* Terms and submit button */}
+        <TermsAndConditions
+          checked={accepted}
+          onChange={(val) => {
+            setAccepted(val);
+            setTermsError(false);
+          }}
+          ref={termsRef}
+          error={termsError}
+        />
+        <button
+          type='submit'
+          className='w-full py-3 rounded-lg bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300 flex items-center justify-center mt-6 text-base'
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <svg
+                className='animate-spin h-5 w-5 mr-2 text-gray-700'
+                viewBox='0 0 24 24'
+              >
+                <circle
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
+                  fill='none'
+                />
+                <path
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z'
+                />
+              </svg>
+              Skickar...
+            </>
+          ) : (
+            'Skicka'
+          )}
+        </button>
+        <p className='text-xs text-center pt-4'>
+          *Alla fält måste fyllas i för att fortsätta
+        </p>
+      </form>
     </div>
   );
 }

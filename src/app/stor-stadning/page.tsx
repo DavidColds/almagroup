@@ -23,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* Cleaning info as accordions */}
-      <div className='w-full max-w-5xl mx-auto dark:bg-[#282828f0] bg-[#eeeeee79] rounded-lg shadow my-12 p-10'>
+      <div className='w-full container mx-auto dark:bg-[#282828f0] bg-[#eeeeee79] rounded-lg shadow my-12 p-10'>
         <h3 className='pb-4'>Det här ingår i hemstädningen</h3>
         <div className='space-y-2'>
           <Accordion
@@ -148,7 +148,7 @@ export default function Home() {
       </div>
 
       {/* Form and image side by side */}
-      <div className='w-full max-w-5xl mx-auto flex flex-col md:flex-row gap-8 items-stretch pb-10 px-2'>
+      <div className='w-full container mx-auto flex flex-col md:flex-row gap-8 items-stretch pb-10 px-2'>
         <div className='flex-1 rounded-lg shadow  flex items-center'>
           <BigCleaning />
         </div>

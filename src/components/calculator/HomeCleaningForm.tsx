@@ -285,18 +285,19 @@ export default function HomeCleaningForm() {
       <h2 className='text-3xl font-bold mb-6'>Städning</h2>
       <form
         onSubmit={handleSubmit}
-        className='w-full max-w-5xl rounded-lg overflow-hidden'
+        className='w-full container rounded-lg overflow-hidden'
       >
         <div className='flex flex-col gap-8 p-2'>
           {/* Step 1: Home Info */}
           {step === 1 && (
-            <div className='space-y-6'>
-              <div className='space-y-2'>
-                <label className='text-sm font-medium'>
-                  Bostadsarea (kvm)*
-                  <br />
-                  <span className='text-xs text-gray-500'>(obligatorisk)</span>
+            <div className='space-y-8'>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Bostadsarea (kvm) <span className='text-red-500'>*</span>
                 </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
                 <input
                   ref={kvmRef}
                   type='number'
@@ -306,7 +307,7 @@ export default function HomeCleaningForm() {
                   value={kvm}
                   onChange={(e) => setKvm(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, kvm: true }))}
-                  className='mx-1 w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
                   placeholder='Ange kvm'
                   required
                 />
@@ -320,39 +321,34 @@ export default function HomeCleaningForm() {
                   )}
               </div>
 
-              <div className='space-y-2'>
-                <div className='flex items-center'>
-                  <label className='text-sm font-medium'>
-                    Har du några husdjur?
-                    <br />
-                  </label>
-                </div>
-                <label className='flex items-center'>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Har du några husdjur?
+                </label>
+                <label className='inline-flex items-center mt-1 text-base'>
                   <input
                     type='checkbox'
                     checked={hasPets}
                     onChange={() => setHasPets(!hasPets)}
-                    className='mr-2'
+                    className='mr-2 h-5 w-5 accent-black'
                   />
-                  <span>Ja</span>
+                  Ja
                 </label>
               </div>
 
-              <div className='space-y-2'>
-                <div className='flex items-center'>
-                  <label className='text-sm font-medium'>
-                    Hur ofta vill du ha hemstädning?*
-                    <br />
-                    <span className='text-xs text-gray-500'>
-                      (obligatorisk)
-                    </span>
-                  </label>
-                </div>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Hur ofta vill du ha hemstädning?{' '}
+                  <span className='text-red-500'>*</span>
+                </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
                 <div className='flex flex-col gap-2'>
-                  <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
                     Varje vecka
                     <input
-                      className=' h-5 w-5 text-gray-600'
+                      className='h-5 w-5 text-gray-600'
                       type='radio'
                       name='frequency'
                       value='weekly'
@@ -360,11 +356,10 @@ export default function HomeCleaningForm() {
                       onChange={(e) => setFrequency(e.target.value)}
                     />
                   </label>
-
-                  <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
                     Varannan vecka
                     <input
-                      className=' h-5 w-5 text-gray-600'
+                      className='h-5 w-5 text-gray-600'
                       type='radio'
                       name='frequency'
                       value='biweekly'
@@ -372,10 +367,10 @@ export default function HomeCleaningForm() {
                       onChange={(e) => setFrequency(e.target.value)}
                     />
                   </label>
-                  <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
                     Var fjärde vecka
                     <input
-                      className=' h-5 w-5 text-gray-600'
+                      className='h-5 w-5 text-gray-600'
                       type='radio'
                       name='frequency'
                       value='fourth_week'
@@ -383,10 +378,10 @@ export default function HomeCleaningForm() {
                       onChange={(e) => setFrequency(e.target.value)}
                     />
                   </label>
-                  <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
                     Engångsstäd
                     <input
-                      className=' h-5 w-5 text-gray-600'
+                      className='h-5 w-5 text-gray-600'
                       type='radio'
                       name='frequency'
                       value='once'
@@ -398,75 +393,74 @@ export default function HomeCleaningForm() {
               </div>
 
               <div className='pt-6 mt-6'>
-                <h2 className='text-lg font-medium mb-4'>Välj datum </h2>
-
-                <div className='w-full'>
-                  <label className='block text-sm font-medium mb-1 tracking-wide text-gray-700 dark:text-gray-300'>
-                    Välj datum
-                  </label>
-                  <div className='relative w-full'>
-                    <DatePicker
-                      placeholderText='Välj datum'
-                      selected={date}
-                      onChange={(date) => setDate(date)}
-                      onBlur={() => setTouched((t) => ({ ...t, date: true }))}
-                      dateFormat='yyyy-MM-dd'
-                      className='w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
-                      calendarClassName='!w-full'
-                      wrapperClassName='w-full'
-                    />
-                  </div>
-                  {isWeekend(date) && (
-                    <p className='text-sm text-red-600 mt-2 '>
-                      OBS! Städning på helg tillkommer en avgift på 500 SEK.
-                    </p>
-                  )}
+                <h2 className='text-lg font-bold mb-4'>Välj datum</h2>
+                <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
+                  Välj datum <span className='text-red-500'>*</span>
+                </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
+                <div className='relative w-full'>
+                  <DatePicker
+                    placeholderText='Välj datum'
+                    selected={date}
+                    onChange={(date) => setDate(date)}
+                    onBlur={() => setTouched((t) => ({ ...t, date: true }))}
+                    dateFormat='yyyy-MM-dd'
+                    className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                    calendarClassName='!w-full'
+                    wrapperClassName='w-full'
+                  />
                 </div>
+                {isWeekend(date) && (
+                  <p className='text-base text-red-600 mt-2'>
+                    OBS! Städning på helg tillkommer en avgift på 500 SEK.
+                  </p>
+                )}
+              </div>
 
-                <div className='space-y-2 pt-4'>
-                  <label className='text-sm font-medium'>
-                    Tillgång till ditt hem*
-                    <br />
-                    <span className='text-xs text-gray-500'>
-                      (obligatorisk)
-                    </span>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Tillgång till ditt hem <span className='text-red-500'>*</span>
+                </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
+                <div className='flex flex-col gap-2'>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                    Jag kommer att vara hemma
+                    <input
+                      className='h-5 w-5 text-gray-600'
+                      type='radio'
+                      name='access'
+                      value='home'
+                      checked={accessOption === 'home'}
+                      onChange={(e) => setAccessOption(e.target.value)}
+                    />
                   </label>
-                  <div className='flex flex-col gap-2'>
-                    <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
-                      Jag kommer att vara hemma
-                      <input
-                        className=' h-5 w-5 text-gray-600'
-                        type='radio'
-                        name='access'
-                        value='home'
-                        checked={accessOption === 'home'}
-                        onChange={(e) => setAccessOption(e.target.value)}
-                      />
-                    </label>
-                    <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
-                      Jag lämnar nyckeln på ert kontor senast kl. 12 två
-                      arbetsdagar innan
-                      <input
-                        className=' h-5 w-5 text-gray-600'
-                        type='radio'
-                        name='access'
-                        value='leave-key'
-                        checked={accessOption === 'leave-key'}
-                        onChange={(e) => setAccessOption(e.target.value)}
-                      />
-                    </label>
-                    <label className='flex items-center justify-between rounded-xl border border-gray-300 dark:border-gray-700 px-4 py-3 text-gray-900 dark:text-white'>
-                      Ni får mina nycklar
-                      <input
-                        className=' h-5 w-5 text-gray-600'
-                        type='radio'
-                        name='access'
-                        value='have-keys'
-                        checked={accessOption === 'have-keys'}
-                        onChange={(e) => setAccessOption(e.target.value)}
-                      />
-                    </label>
-                  </div>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                    Jag lämnar nyckeln på ert kontor senast kl. 12 två
+                    arbetsdagar innan
+                    <input
+                      className='h-5 w-5 text-gray-600'
+                      type='radio'
+                      name='access'
+                      value='leave-key'
+                      checked={accessOption === 'leave-key'}
+                      onChange={(e) => setAccessOption(e.target.value)}
+                    />
+                  </label>
+                  <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+                    Ni får mina nycklar
+                    <input
+                      className='h-5 w-5 text-gray-600'
+                      type='radio'
+                      name='access'
+                      value='have-keys'
+                      checked={accessOption === 'have-keys'}
+                      onChange={(e) => setAccessOption(e.target.value)}
+                    />
+                  </label>
                 </div>
               </div>
               <div className='flex justify-end gap-2 pt-6'>
@@ -493,23 +487,24 @@ export default function HomeCleaningForm() {
 
           {/* Step 2: Customer Info */}
           {step === 2 && (
-            <div className='space-y-6'>
+            <div className='space-y-8'>
               <div>
                 <label
-                  className='text-sm font-medium block mb-1'
+                  className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'
                   htmlFor='name'
                 >
-                  Namn*
-                  <br />
-                  <span className='text-xs text-gray-500'>(obligatorisk)</span>
+                  Namn <span className='text-red-500'>*</span>
                 </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
                 <input
                   id='name'
                   type='text'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, name: true }))}
-                  className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
                   placeholder='Ditt namn'
                   required
                   ref={nameRef}
@@ -522,20 +517,21 @@ export default function HomeCleaningForm() {
               </div>
               <div>
                 <label
-                  className='text-sm font-medium block mb-1'
+                  className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'
                   htmlFor='email'
                 >
-                  E-post*
-                  <br />
-                  <span className='text-xs text-gray-500'>(obligatorisk)</span>
+                  E-post <span className='text-red-500'>*</span>
                 </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
                 <input
                   id='email'
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-                  className={`w-full rounded-xl border ${email && !emailIsValid ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]`}
+                  className={`w-full rounded-lg border ${email && !emailIsValid ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500`}
                   placeholder='din@email.se'
                   required
                   ref={emailRef}
@@ -550,20 +546,21 @@ export default function HomeCleaningForm() {
               </div>
               <div>
                 <label
-                  className='text-sm font-medium block mb-1'
+                  className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'
                   htmlFor='phone'
                 >
-                  Telefon*
-                  <br />
-                  <span className='text-xs text-gray-500'>(obligatorisk)</span>
+                  Telefon <span className='text-red-500'>*</span>
                 </label>
+                <span className='block text-xs text-gray-500 mb-2'>
+                  (obligatorisk)
+                </span>
                 <input
                   id='phone'
                   type='tel'
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-                  className='w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+                  className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
                   placeholder='070-123 45 67'
                   required
                   ref={phoneRef}
@@ -575,16 +572,13 @@ export default function HomeCleaningForm() {
                 )}
               </div>
 
-              <h2 className='text-lg font-medium mb-4'>Om ditt hem</h2>
-
-              <div className='space-y-2 mb-6'>
-                <div className='flex items-center'>
-                  <label className='text-sm font-medium'>
-                    Finns det något du vill informera oss om angående ditt hem?
-                  </label>
-                </div>
+              <h2 className='text-lg font-bold mb-4'>Om ditt hem</h2>
+              <div>
+                <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                  Finns det något du vill informera oss om angående ditt hem?
+                </label>
                 <textarea
-                  className='w-full p-3 border rounded text-black'
+                  className='w-full p-3 border rounded-lg text-base'
                   placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
                 ></textarea>
               </div>
@@ -619,33 +613,33 @@ export default function HomeCleaningForm() {
 
           {/* Step 3: Summary & Submit */}
           {step === 3 && (
-            <div className='space-y-6'>
-              <h3 className='text-lg font-medium mb-4'>Sammanfattning</h3>
+            <div className='space-y-8'>
+              <h3 className='text-xl font-bold mb-4'>Sammanfattning</h3>
               {details ? (
-                <div className='space-y-4'>
+                <div className='space-y-3 text-base'>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Namn:</strong> {name}
+                    <strong className='font-semibold'>Namn:</strong> {name}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>E-post:</strong> {email}
+                    <strong className='font-semibold'>E-post:</strong> {email}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Telefon:</strong> {phone}
+                    <strong className='font-semibold'>Telefon:</strong> {phone}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Storlek:</strong>{' '}
+                    <strong className='font-semibold'>Storlek:</strong>{' '}
                     {details.kvm} kvm
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Frekvens:</strong>{' '}
+                    <strong className='font-semibold'>Frekvens:</strong>{' '}
                     {frequencyLabels[details.frequency] || details.frequency}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Husdjur:</strong>{' '}
+                    <strong className='font-semibold'>Husdjur:</strong>{' '}
                     {details.hasPets ? 'Ja' : 'Nej'}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Tillgång:</strong>{' '}
+                    <strong className='font-semibold'>Tillgång:</strong>{' '}
                     {details.accessOption === 'home'
                       ? 'Jag kommer att vara hemma'
                       : details.accessOption === 'leave-key'
@@ -653,7 +647,7 @@ export default function HomeCleaningForm() {
                         : 'Ni får mina nycklar'}
                   </div>
                   <div className='flex justify-between'>
-                    <strong className='font-medium'>Pris:</strong> {price}
+                    <strong className='font-semibold'>Pris:</strong> {price}
                   </div>
                 </div>
               ) : (
