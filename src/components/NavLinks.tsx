@@ -19,7 +19,7 @@ export default function NavLinks({
 }) {
   return (
     <nav
-      className={`flex flex-col items-center ${gapClass} md:gap-4 lg:flex-row sm:gap-8`}
+      className={`flex flex-col items-center ${gapClass} md:gap-6 lg:flex-row sm:gap-8`}
     >
       {navLinks.map(({ href, label }) => (
         <a

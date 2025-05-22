@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className='lg:pt-48'>
       {/* Heading section */}
-      <div className='w-full px-4 sm:px-8 lg:px-28 pt-8 p-4 sm:p-6 lg:p-8'>
+      <div className='w-full px-4 sm:px-8 lg:px-28 pt-48 p-4 sm:p-6 lg:p-8 '>
         <h2 className='text-3xl font-bold mb-4 text-center'>
           Boka hemstädning enkelt online
         </h2>

@@ -105,8 +105,8 @@ export default function ContactForm() {
     <div className='max-w-4xl mx-auto py-3 p-2 md:p-6 shadow-lg rounded-lg dark:bg-[#2a2a2a] '>
       <h2 className='text-2xl font-semibold mb-4 '>Kontakta oss</h2>
       <form onSubmit={handleSubmit}>
-        <div className='grid gap-4'>
-          <div className='grid grid-cols-2 gap-4'>
+        <div className='grid gap-6'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
             <div>
               <label className='block font-medium'>
                 Namn: <span className='text-red-500'>*</span>
@@ -135,7 +135,7 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className='grid grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
             <div>
               <label className='block font-medium'>
                 Telefonnummer: <span className='text-red-500'>*</span>

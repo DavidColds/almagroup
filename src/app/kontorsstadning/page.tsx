@@ -6,7 +6,7 @@ import React from 'react';
 export default function ComponentPage() {
   return (
     <main className='flex flex-col md:flex-row md:pt-40 pt-28 pb-32 g:p-28 container mx-auto'>
-      <section className='w-full md:w-1/2 p-8 space-y-6 overflow-hidden'>
+      <section className='w-full md:w-1/2 p-4 md:p-8 space-y-6 overflow-hidden'>
         <h1 className='text-4xl font-semibold'>Kontorsstädning</h1>
         <p className='text-lg leading-relaxed'>
           Vi erbjuder professionell kontorsstädning för företag i alla
@@ -27,7 +27,7 @@ export default function ComponentPage() {
           </ul>
         </div>
       </section>
-      <section className='w-full md:w-1/2 p-8 space-y-6 overflow-hidden'>
+      <section className='w-full md:w-1/2 p-4 md:p-8 space-y-6 overflow-hidden'>
         <OfficeClean />
       </section>
     </main>

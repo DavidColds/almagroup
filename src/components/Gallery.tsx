@@ -41,7 +41,7 @@ export default function Gallery({
       <h2 className='text-2xl font-bold text-center mb-6'>Galleri</h2>
 
       <div className='overflow-x-auto'>
-        <div className='flex gap-4 snap-x snap-mandatory overflow-x-scroll pb-4'>
+        <div className='flex gap-6 snap-x snap-mandatory overflow-x-scroll pb-4'>
           {images.map((img, idx) => (
             <button
               key={idx}
