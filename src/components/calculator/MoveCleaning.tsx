@@ -173,165 +173,157 @@ export default function MoveCleaningForm() {
 
       <form
         onSubmit={handleSubmit}
-        className='w-full container rounded-lg overflow-hidden'
+        className='w-full rounded-lg overflow-hidden'
       >
-        <div className='flex flex-col gap-6'>
-          {/* Main Form Section */}
-          <div className='space-y-6'>
-            {/* KVM */}
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Bostadsarea (kvm) <span className='text-red-500'>*</span>
-              </label>
-              <span className='block text-xs text-gray-500 mb-2'>
-                (obligatorisk)
-              </span>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-6'>
+          {/* KVM */}
+          <div>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Bostadsarea (kvm) <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <input
+              type='number'
+              inputMode='numeric'
+              min={10}
+              max={239}
+              value={kvm}
+              onChange={(e) => setKvm(e.target.value)}
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+              placeholder='Ange kvm'
+              required
+            />
+          </div>
+
+          {/* Husdjur */}
+          <div>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Har du några husdjur?
+            </label>
+            <label className='inline-flex items-center mt-1 text-base'>
               <input
-                type='number'
-                inputMode='numeric'
-                min={10}
-                max={239}
-                value={kvm}
-                onChange={(e) => setKvm(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='Ange kvm'
+                type='checkbox'
+                checked={hasPets}
+                onChange={() => setHasPets(!hasPets)}
+                className='mr-2 h-5 w-5 accent-black'
+              />
+              Ja
+            </label>
+          </div>
+
+          {/* Namn */}
+          <div>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Namn <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <input
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+              placeholder='Ditt namn'
+              required
+            />
+          </div>
+          {/* Email */}
+          <div>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Email <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+              placeholder='Din email'
+              required
+            />
+          </div>
+          {/* Telefon */}
+          <div>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Telefonnummer <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <input
+              type='tel'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+              placeholder='Ditt telefonnummer'
+              required
+            />
+          </div>
+          {/* Datum */}
+          <div>
+            <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
+              Välj önskat datum <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <div className='relative w-full react-datepicker__input-container datepicker-input-width'>
+              <DatePicker
                 required
+                placeholderText='Välj önskat datum'
+                selected={date}
+                onChange={(date) => setDate(date)}
+                dateFormat='yyyy-MM-dd'
+                className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               />
             </div>
-
-            {/* Husdjur */}
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Har du några husdjur?
-              </label>
-              <label className='inline-flex items-center mt-1 text-base'>
-                <input
-                  type='checkbox'
-                  checked={hasPets}
-                  onChange={() => setHasPets(!hasPets)}
-                  className='mr-2 h-5 w-5 accent-black'
-                />
-                Ja
-              </label>
-            </div>
-
-            {/* Kontaktuppgifter */}
-            <div className='space-y-4'>
-              <h3 className='text-lg font-bold text-gray-800 dark:text-gray-200 mb-2'>
-                Kontaktuppgifter
-              </h3>
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                <div>
-                  <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                    Namn <span className='text-red-500'>*</span>
-                  </label>
-                  <span className='block text-xs text-gray-500 mb-2'>
-                    (obligatorisk)
-                  </span>
-                  <input
-                    type='text'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                    placeholder='Ditt namn'
-                    required
-                  />
-                </div>
-                <div>
-                  <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                    Email <span className='text-red-500'>*</span>
-                  </label>
-                  <span className='block text-xs text-gray-500 mb-2'>
-                    (obligatorisk)
-                  </span>
-                  <input
-                    type='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                    placeholder='Din email'
-                    required
-                  />
-                </div>
-                <div>
-                  <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                    Telefonnummer <span className='text-red-500'>*</span>
-                  </label>
-                  <span className='block text-xs text-gray-500 mb-2'>
-                    (obligatorisk)
-                  </span>
-                  <input
-                    type='tel'
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                    placeholder='Ditt telefonnummer'
-                    required
-                  />
-                </div>
-                <div>
-                  <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
-                    Välj önskat datum <span className='text-red-500'>*</span>
-                  </label>
-                  <span className='block text-xs text-gray-500 mb-2'>
-                    (obligatorisk)
-                  </span>
-                  <div className='relative w-full react-datepicker__input-container datepicker-input-width'>
-                    <DatePicker
-                      required
-                      placeholderText='Välj önskat datum'
-                      selected={date}
-                      onChange={(date) => setDate(date)}
-                      dateFormat='yyyy-MM-dd'
-                      className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
-                    />
-                  </div>
-                  {isWeekend(date) && (
-                    <div className='text-xs text-red-600 mt-1'>
-                      OBS! Städning på helg tillkommer en avgift på 500 SEK.
-                    </div>
-                  )}
-                </div>
-                <div className='col-span-2'>
-                  <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                    Tillgång till ditt hem{' '}
-                    <span className='text-red-500'>*</span>
-                  </label>
-                  <span className='block text-xs text-gray-500 mb-2'>
-                    (obligatorisk)
-                  </span>
-                  <select
-                    value={accessOption}
-                    onChange={(e) => setAccessOption(e.target.value)}
-                    className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                    required
-                  >
-                    <option value='' disabled>
-                      Välj ett alternativ
-                    </option>
-                    <option value='home'>Jag kommer att vara hemma</option>
-                    <option value='leave-key'>
-                      Jag lämnar nyckeln på ert kontor senast kl. 12 två
-                      arbetsdagar innan
-                    </option>
-                    <option value='have-keys'>Ni får mina nycklar</option>
-                  </select>
-                </div>
+            {isWeekend(date) && (
+              <div className='text-xs text-red-600 mt-1'>
+                OBS! Städning på helg tillkommer en avgift på 500 SEK.
               </div>
-            </div>
-
-            {/* Om ditt hem */}
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Behöver vi någon övrig information?
-              </label>
-              <textarea
-                className='w-full p-3 border rounded-lg text-base text-black'
-                placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
-                value={extraInfo}
-                onChange={(e) => setExtraInfo(e.target.value)}
-              ></textarea>
-            </div>
+            )}
+          </div>
+          {/* Tillgång till hemmet */}
+          <div className='col-span-1 sm:col-span-2'>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Tillgång till ditt hem <span className='text-red-500'>*</span>
+            </label>
+            <span className='block text-xs text-gray-500 mb-2'>
+              (obligatorisk)
+            </span>
+            <select
+              value={accessOption}
+              onChange={(e) => setAccessOption(e.target.value)}
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+              required
+            >
+              <option value='' disabled>
+                Välj ett alternativ
+              </option>
+              <option value='home'>Jag kommer att vara hemma</option>
+              <option value='leave-key'>
+                Jag lämnar nyckeln på ert kontor senast kl. 12 två arbetsdagar
+                innan
+              </option>
+              <option value='have-keys'>Ni får mina nycklar</option>
+            </select>
+          </div>
+          {/* Övrig info */}
+          <div className='col-span-1 sm:col-span-2'>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Behöver vi någon övrig information?
+            </label>
+            <textarea
+              className='w-full p-3 border rounded-lg text-base text-black'
+              placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
+              value={extraInfo}
+              onChange={(e) => setExtraInfo(e.target.value)}
+            ></textarea>
           </div>
         </div>
 

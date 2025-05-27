@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation'; // Import useRouter
 import TermsAndConditions from '@/components/TermsAndConditions';
+import Link from 'next/link';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -214,7 +215,20 @@ export default function ContactForm() {
           }}
           ref={termsRef}
           error={termsError}
-        />
+        >
+          <span>
+            Jag accepterar{' '}
+            <Link
+              href='/bygg-conditions'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='underline text-blue-600 hover:text-blue-800'
+            >
+              villkoren
+            </Link>
+            .
+          </span>
+        </TermsAndConditions>
         <button
           type='submit'
           className='w-full py-3 rounded-lg bg-gray-800 text-white font-semibold hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300 flex items-center justify-center mt-6 text-base'

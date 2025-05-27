@@ -60,6 +60,10 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;"><strong>Behöver stege:</strong></td>
               <td style="padding:6px 0;">${data.stege ? 'Ja' : 'Nej'}</td>
             </tr>
+             <tr>
+              <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
+              <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
+            </tr>
             <tr>
               <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
               <td style="padding:6px 0;">${data.total} kr</td>
@@ -112,6 +116,10 @@ export async function POST(req: NextRequest) {
                 <td style="padding:6px 0;"><strong>Behöver stege:</strong></td>
                 <td style="padding:6px 0;">${data.stege ? 'Ja' : 'Nej'}</td>
               </tr>
+               <tr>
+              <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
+              <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
+            </tr>
               <tr>
                 <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
                 <td style="padding:6px 0;">${data.total} kr</td>

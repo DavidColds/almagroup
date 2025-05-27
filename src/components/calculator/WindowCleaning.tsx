@@ -20,6 +20,7 @@ const WindowCleaningCalculator = () => {
   const [bleck, setBleck] = useState<number | undefined>(undefined);
   const [karm, setKarm] = useState<number | undefined>(undefined);
   const [stege, setStege] = useState<boolean>(false);
+  const [extraInfo, setExtraInfo] = useState('');
 
   // Contact info
   const [name, setName] = useState('');
@@ -186,6 +187,18 @@ const WindowCleaningCalculator = () => {
               </label>
             </div>
           </div>
+          {/* Övrig info */}
+          <div className='col-span-1 sm:col-span-2'>
+            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+              Finns det något du vill informera oss om angående dina fönstrar
+            </label>
+            <textarea
+              className='w-full p-3 border rounded-lg text-base text-black'
+              placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
+              value={extraInfo}
+              onChange={(e) => setExtraInfo(e.target.value)}
+            ></textarea>
+          </div>
         </div>
 
         <h3 className='text-lg font-bold text-gray-800 dark:text-gray-200 mb-2'>
@@ -262,10 +275,7 @@ const WindowCleaningCalculator = () => {
               <span className='font-semibold'>Behöver stege:</span>{' '}
               {stege ? 'Ja' : 'Nej'}
             </li>
-            <li>
-              <span className='font-semibold'>Totalt pris:</span>{' '}
-              {amount !== undefined ? `${total} kr` : '—'}
-            </li>
+
             <li>
               <span className='font-semibold'>Namn:</span> {name}
             </li>
@@ -275,7 +285,12 @@ const WindowCleaningCalculator = () => {
             <li>
               <span className='font-semibold'>Telefon:</span> {phone}
             </li>
+            <li>
+              <span className='font-semibold text-xl '>Totalt pris:</span>{' '}
+              {amount !== undefined ? `${total} kr` : '—'}
+            </li>
           </ul>
+          <span className='font-semibold'>Övrig info:</span> {extraInfo}
         </div>
 
         {/* Terms and submit button */}

@@ -27,7 +27,7 @@ export default function Home() {
         <div className='flex-1 rounded-lg shadow  flex items-center'>
           <WindowCleaning />
         </div>
-        <div className='flex-1 relative min-h-[300px] md:min-h-[400px] lg:min-h-[500px]'>
+        <div className='flex-1 relative min-h-[300px] md:min-h-[400px] lg:min-h-[500px] hide-ipad'>
           <Image
             src='/images/windowclean1.jpg'
             alt='Cleaning Service'

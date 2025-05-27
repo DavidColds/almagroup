@@ -1,15 +1,16 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, ReactNode } from 'react';
 
 interface TermsAndConditionsProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   error?: boolean;
+  children?: ReactNode; // Allow custom label content
 }
 
 const TermsAndConditions = forwardRef<
   HTMLInputElement,
   TermsAndConditionsProps
->(({ checked, onChange, error }, ref) => {
+>(({ checked, onChange, error, children }, ref) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -23,18 +24,22 @@ const TermsAndConditions = forwardRef<
           className={`accent-blue-600 ${error ? 'ring-2 ring-red-500' : ''}`}
           ref={ref}
         />
-        <span>
-          Jag godkänner{' '}
-          <button
-            type='button'
-            className='underline hover:text-blue-800 focus:outline-none'
-            onClick={() => setModalOpen(true)}
-            aria-haspopup='dialog'
-            aria-expanded={modalOpen}
-          >
-            villkoren*
-          </button>
-        </span>
+        {children ? (
+          children
+        ) : (
+          <span>
+            Jag godkänner{' '}
+            <button
+              type='button'
+              className='underline hover:text-blue-800 focus:outline-none'
+              onClick={() => setModalOpen(true)}
+              aria-haspopup='dialog'
+              aria-expanded={modalOpen}
+            >
+              villkoren*
+            </button>
+          </span>
+        )}
       </label>
 
       {modalOpen && (
