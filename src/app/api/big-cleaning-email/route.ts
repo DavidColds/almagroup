@@ -41,6 +41,18 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;">${data.phone}</td>
             </tr>
             <tr>
+              <td style="padding:6px 0;"><strong>Adress:</strong></td>
+              <td style="padding:6px 0;">${data.address}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Postnummer:</strong></td>
+              <td style="padding:6px 0;">${data.postalCode}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Stad:</strong></td>
+              <td style="padding:6px 0;">${data.city}</td>
+            </tr>
+            <tr>
               <td style="padding:6px 0;"><strong> Storlek:</strong></td>
               <td style="padding:6px 0;">${data.kvm} kvm</td>
             </tr>
@@ -96,6 +108,9 @@ export async function POST(req: NextRequest) {
             <div style="margin-bottom:14px;"><strong>Namn:</strong> ${data.name}</div>
             <div style="margin-bottom:14px;"><strong>E-post:</strong> ${data.email}</div>
             <div style="margin-bottom:14px;"><strong>Telefon:</strong> ${data.phone}</div>
+            <div style="margin-bottom:14px;"><strong>Adress:</strong> ${data.address}</div>
+            <div style="margin-bottom:14px;"><strong>Postnummer:</strong> ${data.postalCode}</div>
+            <div style="margin-bottom:14px;"><strong>Stad:</strong> ${data.city}</div>
           </div>
           <p style="font-size:15px;color:#666;">Vänliga hälsningar,<br><strong>Alma Grupp</strong></p>
           <hr style="margin:32px 0 16px 0;border:none;border-top:1px solid #eee;">

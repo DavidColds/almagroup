@@ -41,6 +41,18 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;">${data.phone}</td>
             </tr>
             <tr>
+              <td style="padding:6px 0;"><strong>Adress:</strong></td>
+              <td style="padding:6px 0;">${data.address}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Postnummer:</strong></td>
+              <td style="padding:6px 0;">${data.postalCode}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Stad:</strong></td>
+              <td style="padding:6px 0;">${data.city}</td>
+            </tr>
+            <tr>
               <td style="padding:6px 0;"><strong>Storlek:</strong></td>
               <td style="padding:6px 0;">${data.kvm} kvm</td>
             </tr>
@@ -98,6 +110,9 @@ export async function POST(req: NextRequest) {
             <p style="margin:0 0 8px 0;"><strong>Dina uppgifter:</strong></p>
             <ul style="margin:0;color:#444;padding-left:18px;">
               <li><strong>Telefon:</strong> ${data.phone}</li>
+              <li><strong>Adress:</strong> ${data.address}</li>
+              <li><strong>Postnummer:</strong> ${data.postalCode}</li>
+              <li><strong>Stad:</strong> ${data.city}</li>
               <li><strong>Storlek:</strong> ${data.kvm} kvm</li>
               <li><strong>Husdjur:</strong> ${data.hasPets}</li>
               <li><strong>Tillgång:</strong> ${data.accessOption}</li>

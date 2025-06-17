@@ -41,6 +41,18 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;">${data.phone}</td>
             </tr>
             <tr>
+              <td style="padding:6px 0;"><strong>Adress:</strong></td>
+              <td style="padding:6px 0;">${data.address}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Postnummer:</strong></td>
+              <td style="padding:6px 0;">${data.postalCode}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Stad:</strong></td>
+              <td style="padding:6px 0;">${data.city}</td>
+            </tr>
+            <tr>
               <td style="padding:6px 0;"><strong>Typ av fönster:</strong></td>
               <td style="padding:6px 0;">${data.type}</td>
             </tr>
@@ -60,7 +72,7 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;"><strong>Behöver stege:</strong></td>
               <td style="padding:6px 0;">${data.stege ? 'Ja' : 'Nej'}</td>
             </tr>
-             <tr>
+            <tr>
               <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
               <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
             </tr>
@@ -97,7 +109,31 @@ export async function POST(req: NextRequest) {
           <div style="background:#fff;border-radius:8px;padding:20px 16px;margin-bottom:24px;">
             <table style="width:100%;font-size:16px;color:#222;">
               <tr>
-                <td style="padding:6px 0;width:150px;"><strong>Typ av fönster:</strong></td>
+                <td style="padding:6px 0;width:150px;"><strong>Namn:</strong></td>
+                <td style="padding:6px 0;">${data.name}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>E-post:</strong></td>
+                <td style="padding:6px 0;">${data.email}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Telefon:</strong></td>
+                <td style="padding:6px 0;">${data.phone}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Adress:</strong></td>
+                <td style="padding:6px 0;">${data.address}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Postnummer:</strong></td>
+                <td style="padding:6px 0;">${data.postalCode}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Stad:</strong></td>
+                <td style="padding:6px 0;">${data.city}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Typ av fönster:</strong></td>
                 <td style="padding:6px 0;">${data.type}</td>
               </tr>
               <tr>
@@ -116,10 +152,10 @@ export async function POST(req: NextRequest) {
                 <td style="padding:6px 0;"><strong>Behöver stege:</strong></td>
                 <td style="padding:6px 0;">${data.stege ? 'Ja' : 'Nej'}</td>
               </tr>
-               <tr>
-              <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
-              <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
-            </tr>
+              <tr>
+                <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
+                <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
+              </tr>
               <tr>
                 <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
                 <td style="padding:6px 0;">${data.total} kr</td>

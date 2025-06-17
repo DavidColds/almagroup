@@ -88,6 +88,6 @@
     max-width: 100%;
   }
   .react-datepicker__input-container input {
-    @apply w-full;
+    @apply w-80;
   }
 }

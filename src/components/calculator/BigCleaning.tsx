@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
-import { sv } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import TermsAndConditions from '@/components/TermsAndConditions';
+import Address from '@/components/Addres';
 
 const fixedCleaningPrices = [
   { minKvm: 0, maxKvm: 30, price: 1599 },
@@ -35,13 +35,23 @@ export default function FixedPriceCalculator() {
   const [includeOven, setIncludeOven] = useState(false);
   const [includeFridge, setIncludeFridge] = useState(false);
   const [price, setPrice] = useState<string | null>(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [date, setDate] = useState<Date | null>(null); // Ensure date is a Date object
   const [accepted, setAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [extraInfo, setExtraInfo] = useState('');
+
+  const [addressFields, setAddressFields] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  });
+  const [addressError, setAddressError] = useState<
+    Partial<typeof addressFields>
+  >({});
   const termsRef = useRef<HTMLInputElement>(null); // Use useRef for ref
   const router = useRouter(); // Initialize useRouter
 
@@ -84,31 +94,49 @@ export default function FixedPriceCalculator() {
     setPrice(`${total} SEK`);
   };
 
+  // Validation helper
+  function validateAddressFields(fields: typeof addressFields) {
+    const errors: Partial<typeof addressFields> = {};
+    if (!fields.name) errors.name = 'Namn krävs';
+    if (!fields.email) errors.email = 'E-post krävs';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
+      errors.email = 'Ogiltig e-post';
+    if (!fields.phone) errors.phone = 'Telefon krävs';
+    if (!fields.address) errors.address = 'Adress krävs';
+    if (!fields.postalCode) errors.postalCode = 'Postnummer krävs';
+    else if (!/^\d{5}$/.test(fields.postalCode))
+      errors.postalCode = 'Postnummer måste vara 5 siffror';
+    if (!fields.city) errors.city = 'Stad krävs';
+    return errors;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     const numericKvm = parseInt(kvm.replace(/\D/g, ''), 10);
-    if (isNaN(numericKvm) || numericKvm <= 0) {
-      alert('Fyll i en giltig bostadsstorlek innan du skickar formuläret.');
+    const addressValidation = validateAddressFields(addressFields);
+    if (
+      isNaN(numericKvm) ||
+      numericKvm <= 0 ||
+      !date ||
+      Object.keys(addressValidation).length > 0 ||
+      !accepted
+    ) {
+      setAddressError(addressValidation);
       setLoading(false);
+      setTermsError(!accepted);
+      if (!accepted) termsRef.current?.focus();
       return;
     }
-
-    if (!name || !email || !phone || !date) {
-      alert('Fyll i alla obligatoriska fält.');
-      setLoading(false);
-      return;
-    }
+    setAddressError({});
 
     const payload = {
       kvm: numericKvm,
       includeOven,
       includeFridge,
       price: price || 'Ej tillgängligt',
-      name,
-      email,
-      phone,
+      ...addressFields,
       date: date.toISOString().split('T')[0], // Format date as yyyy-MM-dd
     };
 
@@ -158,8 +186,8 @@ export default function FixedPriceCalculator() {
           />
         </div>
 
-        <div className='space-y-4'>
-          <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+        <div className='flex flex-col md:flex-row gap-6'>
+          <label className='flex flex-1 items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
             <span>Ugnsrengöring (+279 SEK)</span>
             <input
               type='checkbox'
@@ -168,7 +196,7 @@ export default function FixedPriceCalculator() {
               className='h-5 w-5 text-gray-600'
             />
           </label>
-          <label className='flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
+          <label className='flex flex-1 items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-base text-gray-900 dark:text-white'>
             <span>Kyl/Frys rengöring (+279 SEK)</span>
             <input
               type='checkbox'
@@ -179,93 +207,47 @@ export default function FixedPriceCalculator() {
           </label>
         </div>
 
-        <div className='space-y-4'>
-          <h3 className='text-lg font-bold text-gray-800 dark:text-gray-200 mb-2'>
-            Kontaktuppgifter
-          </h3>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Namn <span className='text-red-500'>*</span>
-              </label>
-              <span className='block text-xs text-gray-500 mb-2'>
-                (obligatorisk)
-              </span>
-              <input
-                type='text'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='Ditt namn'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Email <span className='text-red-500'>*</span>
-              </label>
-              <span className='block text-xs text-gray-500 mb-2'>
-                (obligatorisk)
-              </span>
-              <input
-                type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='Din email'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Telefonnummer <span className='text-red-500'>*</span>
-              </label>
-              <span className='block text-xs text-gray-500 mb-2'>
-                (obligatorisk)
-              </span>
-              <input
-                type='tel'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='Ditt telefonnummer'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
-                Välj önskat datum <span className='text-red-500'>*</span>
-              </label>
-              <span className='block text-xs text-gray-500 mb-2'>
-                (obligatorisk)
-              </span>
-              <div className='relative w-full react-datepicker__input-container datepicker-input-width'>
-                <DatePicker
-                  required
-                  placeholderText='Välj önskat datum'
-                  selected={date}
-                  onChange={(date) => setDate(date)}
-                  dateFormat='yyyy-MM-dd'
-                  className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
-                />
-              </div>
-              {isWeekend(date) && (
-                <div className='text-xs text-red-600 mt-1'>
-                  OBS! Städning på helg tillkommer en avgift på 500 SEK.
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <Address
+          value={addressFields}
+          onChange={setAddressFields}
+          required
+          error={addressError}
+        />
 
+        <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1 mt-8'>
+          Välj önskat datum <span className='text-red-500'>*</span>
+        </label>
+        <DatePicker
+          placeholderText='Välj datum'
+          selected={date}
+          onChange={(date) => setDate(date)}
+          dateFormat='yyyy-MM-dd'
+          className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+          calendarClassName='!w-full'
+          wrapperClassName='w-full'
+          required
+        />
+        {isWeekend(date) && (
+          <p className='text-base text-red-600 mt-2'>
+            OBS! Städning på helg tillkommer en avgift på 500 SEK.
+          </p>
+        )}
+        {/* Övrig info */}
+        <div className='col-span-1 sm:col-span-2'>
+          <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+            Behöver vi någon övrig information?
+          </label>
+          <textarea
+            className='w-full p-3 border rounded-lg text-base text-black dark:text-white bg-white dark:bg-[#1f1f1f] placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+            placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
+            value={extraInfo}
+            onChange={(e) => setExtraInfo(e.target.value)}
+          ></textarea>
+        </div>
         <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center'>
-          <h3 className='text-lg font-semibold'>Totalt pris</h3>
           {price ? (
             <>
-              <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
-                {price}
-              </div>
-              <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3 max-w-md mx-auto'>
+              <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3  mx-auto'>
                 <div>
                   <span className='font-semibold'>Bostadens storlek:</span>{' '}
                   {kvm} kvm
@@ -289,19 +271,36 @@ export default function FixedPriceCalculator() {
                   )}
                 </div>
                 <div>
-                  <span className='font-semibold'>Namn:</span> {name}
+                  <span className='font-semibold'>Namn:</span>{' '}
+                  {addressFields.name}
                 </div>
                 <div>
-                  <span className='font-semibold'>E-post:</span> {email}
+                  <span className='font-semibold'>E-post:</span>{' '}
+                  {addressFields.email}
                 </div>
                 <div>
-                  <span className='font-semibold'>Telefon:</span> {phone}
+                  <span className='font-semibold'>Telefon:</span>{' '}
+                  {addressFields.phone}
+                </div>
+                <div>
+                  <span className='font-semibold'>Adress:</span>{' '}
+                  {addressFields.address}
+                </div>
+                <div>
+                  <span className='font-semibold'>Postnummer:</span>{' '}
+                  {addressFields.postalCode}
+                </div>
+                <div>
+                  <span className='font-semibold'>Stad:</span>{' '}
+                  {addressFields.city}
                 </div>
               </div>
+              <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
+                <h3 className='text-lg font-semibold'>Totalt pris</h3>
+                {price}
+              </div>
             </>
-          ) : (
-            <div className='text-gray-500'>Fyll i bostadens storlek</div>
-          )}
+          ) : null}
         </div>
 
         <TermsAndConditions

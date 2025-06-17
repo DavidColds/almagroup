@@ -5,30 +5,44 @@ import { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/navigation';
+import Address from '@/components/Addres';
 
 const cleaningPrices = [
-  { minKvm: 0, maxKvm: 30, price: 1795 },
-  { minKvm: 31, maxKvm: 40, price: 1995 },
-  { minKvm: 41, maxKvm: 50, price: 2195 },
-  { minKvm: 51, maxKvm: 60, price: 2395 },
-  { minKvm: 61, maxKvm: 70, price: 2595 },
-  { minKvm: 71, maxKvm: 80, price: 2795 },
-  { minKvm: 81, maxKvm: 90, price: 2995 },
-  { minKvm: 91, maxKvm: 100, price: 3195 },
-  { minKvm: 101, maxKvm: 110, price: 3395 },
-  { minKvm: 111, maxKvm: 120, price: 3595 },
-  { minKvm: 121, maxKvm: 130, price: 3795 },
-  { minKvm: 131, maxKvm: 140, price: 3995 },
-  { minKvm: 141, maxKvm: 150, price: 4195 },
-  { minKvm: 151, maxKvm: 160, price: 4395 },
-  { minKvm: 161, maxKvm: 170, price: 4595 },
-  { minKvm: 171, maxKvm: 180, price: 4795 },
-  { minKvm: 181, maxKvm: 190, price: 4995 },
-  { minKvm: 191, maxKvm: 200, price: 5195 },
-  { minKvm: 201, maxKvm: 210, price: 5395 },
-  { minKvm: 211, maxKvm: 220, price: 5595 },
-  { minKvm: 221, maxKvm: 230, price: 5795 },
-  { minKvm: 231, maxKvm: 240, price: 5995 },
+  { minKvm: 0, maxKvm: 20, price: 1699 },
+  { minKvm: 21, maxKvm: 25, price: 1899 },
+  { minKvm: 26, maxKvm: 30, price: 2099 },
+  { minKvm: 31, maxKvm: 35, price: 2249 },
+  { minKvm: 36, maxKvm: 40, price: 2349 },
+  { minKvm: 41, maxKvm: 45, price: 2499 },
+  { minKvm: 46, maxKvm: 50, price: 2649 },
+  { minKvm: 51, maxKvm: 60, price: 2949 },
+  { minKvm: 61, maxKvm: 65, price: 3149 },
+  { minKvm: 66, maxKvm: 70, price: 3399 },
+  { minKvm: 71, maxKvm: 75, price: 3599 },
+  { minKvm: 76, maxKvm: 80, price: 3649 },
+  { minKvm: 81, maxKvm: 85, price: 3849 },
+  { minKvm: 86, maxKvm: 90, price: 4099 },
+  { minKvm: 91, maxKvm: 95, price: 4149 },
+  { minKvm: 96, maxKvm: 100, price: 4249 },
+  { minKvm: 101, maxKvm: 110, price: 4449 },
+  { minKvm: 111, maxKvm: 115, price: 4649 },
+  { minKvm: 116, maxKvm: 125, price: 4999 },
+  { minKvm: 126, maxKvm: 135, price: 5349 },
+  { minKvm: 136, maxKvm: 140, price: 5499 },
+  { minKvm: 141, maxKvm: 145, price: 5749 },
+  { minKvm: 146, maxKvm: 150, price: 5899 },
+  { minKvm: 151, maxKvm: 160, price: 6199 },
+  { minKvm: 161, maxKvm: 170, price: 6499 },
+  { minKvm: 171, maxKvm: 180, price: 6649 },
+  { minKvm: 181, maxKvm: 190, price: 6899 },
+  { minKvm: 191, maxKvm: 200, price: 7499 },
+  { minKvm: 201, maxKvm: 210, price: 7649 },
+  { minKvm: 211, maxKvm: 220, price: 7849 },
+  { minKvm: 221, maxKvm: 230, price: 8099 },
+  { minKvm: 231, maxKvm: 240, price: 8399 },
+  { minKvm: 241, maxKvm: 250, price: 8699 },
+  { minKvm: 251, maxKvm: 260, price: 8999 },
+  // 261+ is "offertfrågan"
 ];
 
 function isWeekend(date: Date | null) {
@@ -48,7 +62,14 @@ export default function MoveCleaningForm() {
     accessOption: string;
     totalPrice: number;
   } | null>(null);
-
+  const [addressFields, setAddressFields] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -59,6 +80,10 @@ export default function MoveCleaningForm() {
   const [termsError, setTermsError] = useState(false);
   const termsRef = useRef<HTMLInputElement>(null); // Use useRef for ref
   const router = useRouter(); // Initialize useRouter
+
+  const [addressError, setAddressError] = useState<
+    Partial<typeof addressFields>
+  >({});
 
   useEffect(() => {
     calculateCleaningCost();
@@ -72,8 +97,8 @@ export default function MoveCleaningForm() {
       setDetails(null);
       return;
     }
-    if (numericKvm > 240) {
-      setPrice('Kontakta oss för pris');
+    if (numericKvm > 260) {
+      setPrice('Kontakta oss för offert');
       setDetails(null);
       return;
     }
@@ -175,95 +200,52 @@ export default function MoveCleaningForm() {
         onSubmit={handleSubmit}
         className='w-full rounded-lg overflow-hidden'
       >
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-6'>
+        <div className='flex flex-col gap-8 p-2'>
           {/* KVM */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Bostadsarea (kvm) <span className='text-red-500'>*</span>
-            </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <input
-              type='number'
-              inputMode='numeric'
-              min={10}
-              max={239}
-              value={kvm}
-              onChange={(e) => setKvm(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              placeholder='Ange kvm'
-              required
-            />
-          </div>
-
-          {/* Husdjur */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Har du några husdjur?
-            </label>
-            <label className='inline-flex items-center mt-1 text-base'>
+          <div className='flex flex-col md:flex-row gap-6'>
+            {/* Bostadsinfo */}
+            <div className='flex-1'>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Bostadsarea (kvm) <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
               <input
-                type='checkbox'
-                checked={hasPets}
-                onChange={() => setHasPets(!hasPets)}
-                className='mr-2 h-5 w-5 accent-black'
+                type='number'
+                inputMode='numeric'
+                min={10}
+                max={239}
+                value={kvm}
+                onChange={(e) => setKvm(e.target.value)}
+                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                placeholder='Ange kvm'
+                required
               />
-              Ja
-            </label>
+            </div>
+            {/* Husdjur */}
+            <div className='flex-1 flex flex-col justify-end'>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Har du några husdjur?
+              </label>
+              <label className='inline-flex items-center mt-1 text-base'>
+                <input
+                  type='checkbox'
+                  checked={hasPets}
+                  onChange={() => setHasPets(!hasPets)}
+                  className='mr-2 h-5 w-5 accent-black'
+                />
+                Ja
+              </label>
+            </div>
           </div>
 
-          {/* Namn */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Namn <span className='text-red-500'>*</span>
-            </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <input
-              type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              placeholder='Ditt namn'
-              required
-            />
-          </div>
-          {/* Email */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Email <span className='text-red-500'>*</span>
-            </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <input
-              type='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              placeholder='Din email'
-              required
-            />
-          </div>
-          {/* Telefon */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Telefonnummer <span className='text-red-500'>*</span>
-            </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <input
-              type='tel'
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              placeholder='Ditt telefonnummer'
-              required
-            />
-          </div>
+          <Address
+            value={addressFields}
+            onChange={setAddressFields}
+            required
+            error={addressError}
+          />
           {/* Datum */}
           <div>
             <label className='block text-base font-semibold mb-1 text-gray-800 dark:text-gray-200'>
@@ -319,7 +301,7 @@ export default function MoveCleaningForm() {
               Behöver vi någon övrig information?
             </label>
             <textarea
-              className='w-full p-3 border rounded-lg text-base text-black'
+              className='w-full p-3 border rounded-lg text-base text-black dark:text-white bg-white dark:bg-[#1f1f1f] placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
               placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
               value={extraInfo}
               onChange={(e) => setExtraInfo(e.target.value)}

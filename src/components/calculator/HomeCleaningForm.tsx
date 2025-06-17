@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/navigation';
+import Address from '@/components/Addres';
 
 const cleaningPrices = [
   {
@@ -76,14 +77,22 @@ export default function HomeCleaningForm() {
   const [hasPets, setHasPets] = useState(false);
   const [accessOption, setAccessOption] = useState('');
   const [date, setDate] = useState<Date | null>(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [addressFields, setAddressFields] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  });
   const [extraInfo, setExtraInfo] = useState('');
   const [accepted, setAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [price, setPrice] = useState<string | null>(null);
+  const [addressError, setAddressError] = useState<
+    Partial<typeof addressFields>
+  >({});
 
   const termsRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -123,9 +132,23 @@ export default function HomeCleaningForm() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
+  // Validation helper
+  function validateAddressFields(fields: typeof addressFields) {
+    const errors: Partial<typeof addressFields> = {};
+    if (!fields.name) errors.name = 'Namn krävs';
+    if (!fields.email) errors.email = 'E-post krävs';
+    else if (!validateEmail(fields.email)) errors.email = 'Ogiltig e-post';
+    if (!fields.phone) errors.phone = 'Telefon krävs';
+    if (!fields.address) errors.address = 'Adress krävs';
+    if (!fields.postalCode) errors.postalCode = 'Postnummer krävs';
+    if (!fields.city) errors.city = 'Stad krävs';
+    return errors;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const addressValidation = validateAddressFields(addressFields);
     if (
       !kvm ||
       parseInt(kvm, 10) < 10 ||
@@ -133,16 +156,15 @@ export default function HomeCleaningForm() {
       !frequency ||
       !date ||
       !accessOption ||
-      !name ||
-      !email ||
-      !validateEmail(email) ||
-      !phone ||
+      Object.keys(addressValidation).length > 0 ||
       !accepted
     ) {
+      setAddressError(addressValidation);
       setTermsError(!accepted);
       if (!accepted) termsRef.current?.focus();
       return;
     }
+    setAddressError({});
 
     setLoading(true);
 
@@ -156,9 +178,12 @@ export default function HomeCleaningForm() {
     const totalPrice = basePrice + petFee + weekendFee;
 
     const emailContent = `
-      Namn: ${name}
-      E-post: ${email}
-      Telefon: ${phone}
+      Namn: ${addressFields.name}
+      E-post: ${addressFields.email}
+      Telefon: ${addressFields.phone}
+      Adress: ${addressFields.address}
+      Postnummer: ${addressFields.postalCode}
+      Stad: ${addressFields.city}
       Bostadsarea: ${kvm} kvm
       Frekvens: ${frequencyLabels[frequency] || frequency}
       Husdjur: ${hasPets ? 'Ja' : 'Nej'}
@@ -179,9 +204,7 @@ export default function HomeCleaningForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          email,
-          phone,
+          ...addressFields,
           kvm,
           frequency: frequencyLabels[frequency] || frequency,
           hasPets: hasPets ? 'Ja' : 'Nej',
@@ -218,40 +241,43 @@ export default function HomeCleaningForm() {
         className='w-full container rounded-lg overflow-hidden'
       >
         <div className='flex flex-col gap-8 p-2'>
-          {/* Bostadsinfo */}
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Bostadsarea (kvm) <span className='text-red-500'>*</span>
-            </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <input
-              type='number'
-              inputMode='numeric'
-              min={10}
-              max={239}
-              value={kvm}
-              onChange={(e) => setKvm(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              placeholder='Ange kvm'
-              required
-            />
-          </div>
-
-          <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Har du några husdjur?
-            </label>
-            <label className='inline-flex items-center mt-1 text-base'>
+          {/* Bostadsinfo & Husdjur i rad */}
+          <div className='flex flex-col md:flex-row gap-6'>
+            {/* Bostadsinfo */}
+            <div className='flex-1'>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Bostadsarea (kvm) <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
               <input
-                type='checkbox'
-                checked={hasPets}
-                onChange={() => setHasPets(!hasPets)}
-                className='mr-2 h-5 w-5 accent-black'
+                type='number'
+                inputMode='numeric'
+                min={10}
+                max={239}
+                value={kvm}
+                onChange={(e) => setKvm(e.target.value)}
+                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                placeholder='Ange kvm'
+                required
               />
-              Ja
-            </label>
+            </div>
+            {/* Husdjur */}
+            <div className='flex-1 flex flex-col justify-end'>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Har du några husdjur?
+              </label>
+              <label className='inline-flex items-center mt-1 text-base'>
+                <input
+                  type='checkbox'
+                  checked={hasPets}
+                  onChange={() => setHasPets(!hasPets)}
+                  className='mr-2 h-5 w-5 accent-black'
+                />
+                Ja
+              </label>
+            </div>
           </div>
 
           {/* Frequency select */}
@@ -302,68 +328,31 @@ export default function HomeCleaningForm() {
             </select>
           </div>
 
-          {/* Kontaktuppgifter */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Namn <span className='text-red-500'>*</span>
-              </label>
-              <input
-                type='text'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='Ditt namn'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                E-post <span className='text-red-500'>*</span>
-              </label>
-              <input
-                type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='din@email.se'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Telefon <span className='text-red-500'>*</span>
-              </label>
-              <input
-                type='tel'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-                placeholder='070-123 45 67'
-                required
-              />
-            </div>
-            <div>
-              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                Välj önskat datum <span className='text-red-500'>*</span>
-              </label>
-              <DatePicker
-                placeholderText='Välj datum'
-                selected={date}
-                onChange={(date) => setDate(date)}
-                dateFormat='yyyy-MM-dd'
-                className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
-                calendarClassName='!w-full'
-                wrapperClassName='w-full'
-                required
-              />
-              {isWeekend(date) && (
-                <p className='text-base text-red-600 mt-2'>
-                  OBS! Städning på helg tillkommer en avgift på 500 SEK.
-                </p>
-              )}
-            </div>
-          </div>
+          <Address
+            value={addressFields}
+            onChange={setAddressFields}
+            required
+            error={addressError}
+          />
+
+          <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+            Välj önskat datum <span className='text-red-500'>*</span>
+          </label>
+          <DatePicker
+            placeholderText='Välj datum'
+            selected={date}
+            onChange={(date) => setDate(date)}
+            dateFormat='yyyy-MM-dd'
+            className='w-1/2 rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+            calendarClassName='!w-full'
+            wrapperClassName='w-full'
+            required
+          />
+          {isWeekend(date) && (
+            <p className='text-base text-red-600 mt-2'>
+              OBS! Städning på helg tillkommer en avgift på 500 SEK.
+            </p>
+          )}
 
           {/* Extra info */}
           <div>
@@ -371,7 +360,7 @@ export default function HomeCleaningForm() {
               Finns det något du vill informera oss om angående ditt hem?
             </label>
             <textarea
-              className='w-full p-3 border rounded-lg text-base'
+              className='w-full p-3 border rounded-lg text-base text-black dark:text-white bg-white dark:bg-[#1f1f1f] placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
               placeholder='Ange eventuella särskilda önskemål eller detaljer om ditt hem'
               value={extraInfo}
               onChange={(e) => setExtraInfo(e.target.value)}
@@ -380,12 +369,8 @@ export default function HomeCleaningForm() {
 
           {/* Pris & Terms */}
           <div className='pt mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center'>
-            <h3 className='text-lg font-semibold'>Totalt pris</h3>
             {price ? (
               <>
-                <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
-                  {price}
-                </div>
                 <div className='text-left text-base text-gray-700 dark:text-gray-200 space-y-3'>
                   <div>
                     <span className='font-semibold'>Bostadens storlek:</span>{' '}
@@ -402,14 +387,34 @@ export default function HomeCleaningForm() {
                     )}
                   </div>
                   <div>
-                    <span className='font-semibold'>Namn:</span> {name}
+                    <span className='font-semibold'>Namn:</span>{' '}
+                    {addressFields.name}
                   </div>
                   <div>
-                    <span className='font-semibold'>E-post:</span> {email}
+                    <span className='font-semibold'>E-post:</span>{' '}
+                    {addressFields.email}
                   </div>
                   <div>
-                    <span className='font-semibold'>Telefon:</span> {phone}
+                    <span className='font-semibold'>Telefon:</span>{' '}
+                    {addressFields.phone}
                   </div>
+                  <div>
+                    <span className='font-semibold'>Adress:</span>{' '}
+                    {addressFields.address}
+                  </div>
+                  <div>
+                    <span className='font-semibold'>Postnummer:</span>{' '}
+                    {addressFields.postalCode}
+                  </div>
+                  <div>
+                    <span className='font-semibold'>Stad:</span>{' '}
+                    {addressFields.city}
+                  </div>
+                </div>
+                <h3 className='text-lg font-semibold'>Totalt pris</h3>
+
+                <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
+                  {price}
                 </div>
               </>
             ) : (
