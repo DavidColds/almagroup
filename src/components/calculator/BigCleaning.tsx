@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef,useState } from 'react';
 import DatePicker from 'react-datepicker';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import TermsAndConditions from '@/components/TermsAndConditions';
+
 import Address from '@/components/Addres';
+import TermsAndConditions from '@/components/TermsAndConditions';
 
 const fixedCleaningPrices = [
   { minKvm: 0, maxKvm: 30, price: 1599 },

@@ -3,10 +3,14 @@ import * as React from 'react';
 
 import '@/styles/globals.css';
 
-import { siteConfig } from '@/constant/config';
+import CookieBotClient from '@/components/CookieBotClient';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
+
 import { Providers } from '@/app/providers';
+import { siteConfig } from '@/constant/config';
+
+const domainGroupId = '390e454c-d075-4ad2-84cd-04b1509fb29c';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -18,8 +22,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   icons: {
     icon: '/favicon/favicon.ico',
-    shortcut: '/favicon/favicon-16x16.png',
-    apple: '/favicon/apple-touch-icon.png',
   },
   manifest: `/favicon/site.webmanifest`,
   openGraph: {
@@ -29,13 +31,10 @@ export const metadata: Metadata = {
     siteName: siteConfig.title,
     images: [`${siteConfig.url}/images/og.jpg`],
     type: 'website',
-    locale: 'en_US',
+    locale: 'sv_SE',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
-    images: [`${siteConfig.url}/images/og.jpg`],
+  alternates: {
+    canonical: siteConfig.url,
   },
 };
 
@@ -45,10 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
+    <html lang='sv'>
       <body className='flex flex-col min-h-screen '>
         <Providers>
           <Nav />
+          <CookieBotClient domainGroupId={domainGroupId} />
           <div className='flex-grow'>{children}</div>
           <Footer />
         </Providers>

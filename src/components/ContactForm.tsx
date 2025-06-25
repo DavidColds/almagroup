@@ -1,8 +1,9 @@
 'use client';
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter
-import TermsAndConditions from '@/components/TermsAndConditions';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRef, useState } from 'react';
+
+import TermsAndConditions from '@/components/TermsAndConditions';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({

@@ -1,7 +1,8 @@
+import React, { useRef,useState } from 'react';
+import DatePicker from 'react-datepicker';
+
 import Address from '@/components/Addres';
 import TermsAndConditions from '@/components/TermsAndConditions';
-import DatePicker from 'react-datepicker';
-import React, { useState, useRef } from 'react';
 
 type CleaningType =
   | 'Utan spröjs, 2 sidor'

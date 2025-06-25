@@ -1,7 +1,8 @@
 import clsx from 'clsx';
-import { useMemo } from 'react';
-import NextImage from '@/components/NextImage';
 import Link from 'next/link';
+import { useMemo } from 'react';
+
+import NextImage from '@/components/NextImage';
 
 export default function Section({
   id,

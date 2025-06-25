@@ -1,8 +1,9 @@
 'use client';
 
+import React from 'react';
+
 import ContactForm from '@/components/ContactForm';
 import Gallery from '@/components/Gallery';
-import React from 'react';
 
 export default function ComponentPage() {
   return (

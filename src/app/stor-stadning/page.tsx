@@ -1,9 +1,9 @@
 'use client';
-import BigCleaning from '@/components/calculator/BigCleaning';
 import Image from 'next/image';
-import Accordion from '@/components/Accordion';
-
 import React, { useState } from 'react';
+
+import Accordion from '@/components/Accordion';
+import BigCleaning from '@/components/calculator/BigCleaning';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);

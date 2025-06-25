@@ -1,9 +1,8 @@
 'use client';
-import WindowCleaning from '@/components/calculator/WindowCleaning';
 import Image from 'next/image';
-import Accordion from '@/components/Accordion';
-
 import React, { useState } from 'react';
+
+import WindowCleaning from '@/components/calculator/WindowCleaning';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);

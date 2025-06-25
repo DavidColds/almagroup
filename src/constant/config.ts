@@ -1,7 +1,6 @@
 export const siteConfig = {
-  title: 'Almagrupp',
+  title: 'Städning & Bygg i Stockholm | Alma Grupp',
   description:
-    '',
-  /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://genuine-salmiakki-ba723b.netlify.app/',
+    'Professionella tjänster inom städning och bygg i Stockholm, Eskilstuna, Nyköping, Enköping, Västerås, Södertälje, Strängnäs, Bålsta, Malmköping, Flen, Katrineholm, Trosa och närliggande områden. Vi erbjuder hemstädning, flyttstädning, fönsterputs, renovering och byggservice.',
+  url: 'https://genuine-salmiakki-ba723b.netlify.app',
 };

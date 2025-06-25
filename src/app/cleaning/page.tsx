@@ -1,9 +1,9 @@
 'use client';
-import HomeCleaningForm from '@/components/calculator/HomeCleaningForm';
 import Image from 'next/image';
-import Accordion from '@/components/Accordion';
-
 import React, { useState } from 'react';
+
+import Accordion from '@/components/Accordion';
+import HomeCleaningForm from '@/components/calculator/HomeCleaningForm';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);

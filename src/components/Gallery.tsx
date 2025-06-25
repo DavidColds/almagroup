@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import Image, { StaticImageData } from 'next/image';
+import React, { useState } from 'react';
 
 import bygg1 from '../../public/images/bygg1.jpg';
 import bygg2 from '../../public/images/bygg2.jpg';

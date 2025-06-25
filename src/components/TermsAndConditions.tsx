@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, ReactNode } from 'react';
+import React, { forwardRef, ReactNode,useState } from 'react';
 
 interface TermsAndConditionsProps {
   checked: boolean;

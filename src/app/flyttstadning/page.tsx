@@ -1,9 +1,9 @@
 'use client';
-import MoveCleaning from '@/components/calculator/MoveCleaning';
 import Image from 'next/image';
-import Accordion from '@/components/Accordion';
-
 import React, { useState } from 'react';
+
+import Accordion from '@/components/Accordion';
+import MoveCleaning from '@/components/calculator/MoveCleaning';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);

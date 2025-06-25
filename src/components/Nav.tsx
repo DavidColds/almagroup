@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import NavLinks from './NavLinks';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
 import Link from 'next/link';
+import { useEffect,useState } from 'react';
+
+import ThemeSwitcher from '@/components/ThemeSwitcher';
+
+import NavLinks from './NavLinks';
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
