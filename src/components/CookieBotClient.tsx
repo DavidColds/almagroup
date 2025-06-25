@@ -1,10 +1,15 @@
 'use client';
-import ReactCookieBot from 'react-cookiebot';
+import Script from 'next/script';
+import React from 'react';
 
-export default function CookieBotClient({
-  domainGroupId,
-}: {
-  domainGroupId: string;
-}) {
-  return <ReactCookieBot domainGroupId={domainGroupId} language='sv' />;
+const domainGroupId = '390e454c-d075-4ad2-84cd-04b1509fb29c';
+
+export default function CookieBotClient() {
+  return (
+    <Script
+      id='cookiebot-script'
+      src={`https://consent.cookiebot.com/uc.js?cbid=${domainGroupId}&culture=sv`}
+      strategy='afterInteractive'
+    />
+  );
 }

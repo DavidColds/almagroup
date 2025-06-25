@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -72,9 +72,9 @@ export default function MoveCleaningForm() {
     postalCode: '',
     city: '',
   });
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name] = useState('');
+  const [email] = useState('');
+  const [phone] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [extraInfo, setExtraInfo] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,9 +83,7 @@ export default function MoveCleaningForm() {
   const termsRef = useRef<HTMLInputElement>(null); // Use useRef for ref
   const router = useRouter(); // Initialize useRouter
 
-  const [addressError, setAddressError] = useState<
-    Partial<typeof addressFields>
-  >({});
+  const [addressError] = useState<Partial<typeof addressFields>>({});
 
   useEffect(() => {
     calculateCleaningCost();

@@ -10,8 +10,6 @@ import Nav from '@/components/Nav';
 import { Providers } from '@/app/providers';
 import { siteConfig } from '@/constant/config';
 
-const domainGroupId = '390e454c-d075-4ad2-84cd-04b1509fb29c';
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -48,7 +46,7 @@ export default function RootLayout({
       <body className='flex flex-col min-h-screen '>
         <Providers>
           <Nav />
-          <CookieBotClient domainGroupId={domainGroupId} />
+          <CookieBotClient />
           <div className='flex-grow'>{children}</div>
           <Footer />
         </Providers>
