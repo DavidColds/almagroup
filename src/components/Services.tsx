@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import CityList from '@/components/CityList';
 
 interface Service {
   title: string;
@@ -73,6 +74,7 @@ export default function CleaningConstructionServices(): JSX.Element {
             </Link>
           ))}
         </div>
+        <CityList isStartPage={true} />
       </div>
     </section>
   );

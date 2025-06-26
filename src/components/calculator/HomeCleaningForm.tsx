@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect,useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -95,6 +95,9 @@ export default function HomeCleaningForm() {
   const [addressError, setAddressError] = useState<
     Partial<typeof addressFields>
   >({});
+  const [cleaningType, setCleaningType] = useState<'once' | 'subscription'>(
+    'subscription',
+  );
 
   const termsRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -282,27 +285,62 @@ export default function HomeCleaningForm() {
             </div>
           </div>
 
-          {/* Frequency select */}
+          {/* Typ av städning */}
           <div>
-            <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-              Hur ofta vill du ha hemstädning?{' '}
-              <span className='text-red-500'>*</span>
+            <label className='block font-semibold text-gray-800 dark:text-gray-200 mb-2'>
+              Typ av städning:
             </label>
-            <span className='block text-xs text-gray-500 mb-2'>
-              (obligatorisk)
-            </span>
-            <select
-              value={frequency}
-              onChange={(e) => setFrequency(e.target.value)}
-              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
-              required
-            >
-              <option value='weekly'>Varje vecka</option>
-              <option value='biweekly'>Varannan vecka</option>
-              <option value='fourth_week'>Var fjärde vecka</option>
-              <option value='once'>Engångsstäd</option>
-            </select>
+            <label className='mr-4'>
+              <input
+                type='radio'
+                value='once'
+                checked={cleaningType === 'once'}
+                onChange={() => {
+                  setCleaningType('once');
+                  setFrequency('once');
+                }}
+                className='mr-2 h-5 w-5 accent-black'
+              />
+              Engångsstäd
+            </label>
+
+            <label>
+              <input
+                type='radio'
+                value='subscription'
+                checked={cleaningType === 'subscription'}
+                onChange={() => {
+                  setCleaningType('subscription');
+                  setFrequency('biweekly');
+                }}
+                className='mr-2 h-5 w-5 accent-black'
+              />
+              Abonnemang
+            </label>
           </div>
+
+          {/* Frequency select for subscription */}
+          {cleaningType === 'subscription' ? (
+            <div>
+              <label className='block text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                Hur ofta vill du ha hemstädning?{' '}
+                <span className='text-red-500'>*</span>
+              </label>
+              <span className='block text-xs text-gray-500 mb-2'>
+                (obligatorisk)
+              </span>
+              <select
+                value={frequency}
+                onChange={(e) => setFrequency(e.target.value)}
+                className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500'
+                required
+              >
+                <option value='weekly'>Varje vecka</option>
+                <option value='biweekly'>Varannan vecka</option>
+                <option value='fourth_week'>Var fjärde vecka</option>
+              </select>
+            </div>
+          ) : null}
 
           {/* Access option select */}
           <div>

@@ -4,6 +4,7 @@ import React from 'react';
 
 import ContactForm from '@/components/ContactForm';
 import Gallery from '@/components/Gallery';
+import CityList from '@/components/CityList';
 
 export default function ComponentPage() {
   return (
@@ -18,7 +19,7 @@ export default function ComponentPage() {
               service för alla typer av byggprojekt, från små renoveringar till
               stora nybyggnationer.
             </p>
-
+            <CityList />
             <div>
               <h2 className='text-2xl font-semibold my-6'>Våra byggtjänster</h2>
               <ul className='list-disc pl-5 space-y-3'>

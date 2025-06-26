@@ -21,7 +21,7 @@ export default function Footer() {
 
         {/* Navigation Links and Social Media */}
         <div className='flex flex-col items-center gap-8'>
-          <NavLinks className='text-base' gapClass='gap-6' />
+          <NavLinks className='text-base' gapClass='gap-6' isFooter={true} />
           <SocialLinks />
         </div>
       </div>

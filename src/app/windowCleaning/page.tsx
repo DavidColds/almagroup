@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 import WindowCleaning from '@/components/calculator/WindowCleaning';
+import CityList from '@/components/CityList';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);
@@ -12,16 +13,19 @@ export default function Home() {
       {/* Heading section */}
       <div className='w-full px-4 sm:px-8 lg:px-28 pt-48 p-4 sm:p-6 lg:p-8 '>
         <h2 className='text-3xl font-bold mb-4 text-center'>
-          Boka storstädning enkelt online
+          Fönsterputs & Städning i Mälardalen
         </h2>
-        <p className='text-lg text-center text-gray-700 dark:text-gray-300 max-w-2xl mx-auto'>
-          Fyll i formuläret för att få en offert och boka din storstädning. Vi
-          erbjuder grundlig och professionell storstädning anpassad efter dina
-          behov.
+        <p className='text-lg lg:text-center text-gray-700 dark:text-gray-300 max-w-2xl mx-auto'>
+          Vårt erfarna team ser till att dina fönster blir skinande rena och att
+          du får bästa möjliga service – oavsett om det gäller hem, kontor eller
+          företag. Kontakta oss gärna för en kostnadsfri offert eller om du har
+          frågor om våra tjänster!
         </p>
       </div>
-
       {/* Form and image side by side */}
+      <div className='w-full container mx-auto md:flex-row gap-8 items-stretch pb-10 px-2'>
+        <CityList />
+      </div>
       <div className='w-full container mx-auto flex flex-col md:flex-row gap-8 items-stretch pb-10 px-2'>
         <div className='flex-1 rounded-lg shadow  flex items-center'>
           <WindowCleaning />

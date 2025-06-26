@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import Accordion from '@/components/Accordion';
 import MoveCleaning from '@/components/calculator/MoveCleaning';
+import CityList from '@/components/CityList';
 
 export default function Home() {
   const [open, setOpen] = useState<number | null>(null);
@@ -15,7 +16,7 @@ export default function Home() {
         <h2 className='text-3xl font-bold mb-4 text-center'>
           Boka flyttstädning enkelt online
         </h2>
-        <p className='text-lg text-center text-gray-700 dark:text-gray-300 max-w-2xl mx-auto'>
+        <p className='text-lg lg:text-center text-gray-700 dark:text-gray-300 max-w-2xl mx-auto'>
           Fyll i formuläret för att få en offert och boka din flyttstädning . Vi
           erbjuder grundlig och professionell flyttstädning anpassad efter dina
           behov.
@@ -151,6 +152,7 @@ export default function Home() {
             inte självständigt använda stege för att nå högre. Har vi missat
             något? Ring oss så åtgärdar vi så snabbt vi kan!
           </p>
+          <CityList />
         </div>
       </div>
       {/* Form and image side by side */}

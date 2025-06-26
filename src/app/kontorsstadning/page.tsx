@@ -3,6 +3,7 @@
 import React from 'react';
 
 import OfficeClean from '@/components/OfficeClean';
+import CityList from '@/components/CityList';
 
 export default function ComponentPage() {
   return (
@@ -15,6 +16,7 @@ export default function ComponentPage() {
           säkerställer vi en ren och trivsam arbetsmiljö för dig och dina
           medarbetare.
         </p>
+        <CityList />
         <div>
           <h2 className='text-2xl font-semibold my-6'>Vad vi erbjuder</h2>
           <ul className='list-disc pl-5 space-y-3'>
