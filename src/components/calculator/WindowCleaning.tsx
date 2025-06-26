@@ -1,5 +1,7 @@
-import React, { useRef,useState } from 'react';
+import React, { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import Address from '@/components/Addres';
 import TermsAndConditions from '@/components/TermsAndConditions';

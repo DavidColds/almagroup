@@ -52,17 +52,17 @@ const testimonials = [
 
 export default function Testimonials(): JSX.Element {
   return (
-    <section className='px-4 py-24 white:bg-[#f5f5f5]'>
+    <section className='p-6 py-24 white:bg-[#f5f5f5]'>
       <div className='container mx-auto'>
         <h2
-          className='mb-10 pt-10 pb-10 text-center text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white'
+          className='mb-10 pt-10 pb-10 lg:text-center text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white'
           tabIndex={-1}
           id='kundomdomen'
         >
           Från våra kunder
         </h2>
         <div className='relative overflow-x-auto scrollbar-custom scroll-smooth'>
-          <div className='flex snap-x snap-mandatory space-x-8 px-4 py-5 sm:px-8'>
+          <div className='flex snap-x snap-mandatory space-x-8 pr-4 py-5 sm:px-8'>
             {testimonials.map(({ name, heading, text, stars, date }, index) => (
               <article
                 key={index}

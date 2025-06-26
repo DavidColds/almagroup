@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 
@@ -51,7 +51,7 @@ export default function Nav() {
         <div className='container mx-auto flex items-center justify-between'>
           {/* Logo */}
           <Link href='/'>
-            <div className='text-[1rem] md:text-[2rem] font-semibold tracking-tight leading-none uppercase'>
+            <div className='text-[1.5rem] md:text-[2rem] font-semibold tracking-tight leading-none uppercase'>
               <span className='text-black dark:text-white'>Alma</span>
               <span className='text-neutral-600 dark:text-neutral-400 font-light'>
                 grupp

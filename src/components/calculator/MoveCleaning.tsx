@@ -72,9 +72,6 @@ export default function MoveCleaningForm() {
     postalCode: '',
     city: '',
   });
-  const [name] = useState('');
-  const [email] = useState('');
-  const [phone] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [extraInfo, setExtraInfo] = useState('');
   const [loading, setLoading] = useState(false);
@@ -128,66 +125,69 @@ export default function MoveCleaningForm() {
       return;
     }
 
-    if (!details || !accessOption || !name || !email || !phone) {
+    if (
+      !details ||
+      !accessOption ||
+      !addressFields.name ||
+      !addressFields.email ||
+      !addressFields.phone
+    ) {
       alert('Fyll i alla obligatoriska fält.');
       return;
     }
 
     setLoading(true); // <-- Start loading
 
-    const formattedDate = date ? date.toLocaleDateString('sv-SE') : '';
-
     const emailContent = `
-      Namn: ${name}
-      E-post: ${email}
-      Telefon: ${phone}
-      Bostadsarea: ${details.kvm} kvm
-      Husdjur: ${details.hasPets ? 'Ja' : 'Nej'}
+      Namn: ${addressFields.name}
+      E-post: ${addressFields.email}
+      Telefon: ${addressFields.phone}
+      Adress: ${addressFields.address}
+      Postnummer: ${addressFields.postalCode}
+      Stad: ${addressFields.city}
+      Bostadsarea: ${kvm} kvm
+      Husdjur: ${hasPets ? 'Ja' : 'Nej'}
       Tillgång till hemmet: ${
-        details.accessOption === 'home'
+        accessOption === 'home'
           ? 'Jag kommer att vara hemma'
-          : details.accessOption === 'leave-key'
+          : accessOption === 'leave-key'
             ? 'Jag lämnar nyckeln på ert kontor'
             : 'Ni får mina nycklar'
       }
-      Datum: ${formattedDate}
-      Totalpris: ${details.totalPrice} SEK
+      Datum: ${date ? date.toLocaleDateString('sv-SE') : ''}
+      Extra info: ${extraInfo}
+      Totalpris: ${details?.totalPrice} SEK
     `;
 
     try {
-      const res = await fetch('/api/move-cleaning-email', {
+      const res = await fetch('/api/cleaning-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          email,
-          phone,
-          kvm: details.kvm,
-          hasPets: details.hasPets ? 'Ja' : 'Nej',
+          ...addressFields,
+          kvm,
+          hasPets: hasPets ? 'Ja' : 'Nej',
           accessOption:
-            details.accessOption === 'home'
+            accessOption === 'home'
               ? 'Jag kommer att vara hemma'
-              : details.accessOption === 'leave-key'
+              : accessOption === 'leave-key'
                 ? 'Jag lämnar nyckeln på ert kontor'
                 : 'Ni får mina nycklar',
-          date: formattedDate,
-          totalPrice: `${details.totalPrice} SEK`,
+          date: date ? date.toLocaleDateString('sv-SE') : '',
+          extraInfo,
+          totalPrice: `${details?.totalPrice} SEK`,
           emailContent,
         }),
       });
       const result = await res.json();
+      setLoading(false);
       if (result.status === 'success') {
-        setTimeout(() => {
-          setLoading(false); // <-- Stop loading after delay
-          router.push('/thank-you');
-        }, 500); // Optional: short delay for smoothness
+        router.push('/thank-you');
       } else {
-        setLoading(false); // <-- Stop loading on error
         alert('Något gick fel. Försök igen.');
       }
     } catch (err) {
-      setLoading(false); // <-- Stop loading on error
-      console.error('Error submitting form:', err);
+      setLoading(false);
       alert('Serverfel. Kunde inte skicka formuläret.');
     }
   };
@@ -342,13 +342,16 @@ export default function MoveCleaningForm() {
                   )}
                 </div>
                 <div>
-                  <span className='font-semibold'>Namn:</span> {name}
+                  <span className='font-semibold'>Namn:</span>{' '}
+                  {addressFields.name}
                 </div>
                 <div>
-                  <span className='font-semibold'>E-post:</span> {email}
+                  <span className='font-semibold'>E-post:</span>{' '}
+                  {addressFields.email}
                 </div>
                 <div>
-                  <span className='font-semibold'>Telefon:</span> {phone}
+                  <span className='font-semibold'>Telefon:</span>{' '}
+                  {addressFields.phone}
                 </div>
                 {extraInfo && (
                   <div>

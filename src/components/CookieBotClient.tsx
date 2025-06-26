@@ -2,9 +2,12 @@
 import Script from 'next/script';
 import React from 'react';
 
-const domainGroupId = '390e454c-d075-4ad2-84cd-04b1509fb29c';
+// Make sure NEXT_PUBLIC_COOKIEBOT_DOMAIN_GROUP_ID is set in your .env file
+const domainGroupId = process.env.NEXT_PUBLIC_COOKIEBOT_DOMAIN_GROUP_ID;
 
 export default function CookieBotClient() {
+  if (!domainGroupId) return null;
+
   return (
     <Script
       id='cookiebot-script'
