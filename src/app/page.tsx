@@ -12,9 +12,6 @@ import Testimonials from '@/components/Testimonials';
 export default function HomePage() {
   return (
     <main className='min-h-screen w-full'>
-      <Head>
-        <title>Städning & Bygg i Stockholm | Alma Grupp</title>
-      </Head>
       <Hero />
       <Services />
       <Section />
