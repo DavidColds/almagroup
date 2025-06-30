@@ -1,4 +1,3 @@
-import { Metadata } from 'next';
 import * as React from 'react';
 
 import '@/styles/globals.css';
@@ -7,6 +6,7 @@ import CookieBotClient from '@/components/CookieBotClient';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import GoogleTagManager from '@/components/GoogleTagManager';
 
 import { Providers } from '@/app/providers';
 import { siteConfig } from '@/constant/config';
@@ -18,7 +18,13 @@ export const metadata = {
   keywords: 'städning, fönsterputs, byggstädning, flyttstädning, Stockholm',
   robots: { index: true, follow: true },
   icons: {
-    icon: '/favicon/favicon.ico',
+    icon: [
+      { url: '/favicon/favicon.ico', sizes: 'any' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/favicon/apple-touch-icon.png' }],
+    shortcut: ['/favicon/favicon.ico'],
   },
   manifest: `/favicon/site.webmanifest`,
   openGraph: {
@@ -54,13 +60,25 @@ export default function RootLayout({
   return (
     <html lang='sv'>
       <body className='flex flex-col min-h-screen '>
+        <noscript>
+          <iframe
+            src='https://www.googletagmanager.com/ns.html?id=GTM-WVG82CQK'
+            height='0'
+            width='0'
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
         <Providers>
           <Nav />
           <CookieBotClient />
           {typeof window !== 'undefined' &&
             document.cookie.includes('CookieConsent=true') && (
-              <GoogleAnalytics measurementId='G-B1KKX2XE2G' />
+              <>
+                <GoogleAnalytics measurementId='G-B1KKX2XE2G' />
+                <GoogleTagManager gtmId='GTM-WVG82CQK' />
+              </>
             )}
+
           <div className='flex-grow'>{children}</div>
           <Footer />
         </Providers>
