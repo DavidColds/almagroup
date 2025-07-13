@@ -266,7 +266,7 @@ export default function MoveCleaningForm() {
             </div>
             {isWeekend(date) && (
               <div className='text-xs text-red-600 mt-1'>
-                OBS! Städning på helg tillkommer en avgift på 500 SEK.
+                OBS! Städning på helg tillkommer en extra avgift.
               </div>
             )}
           </div>
@@ -335,9 +335,9 @@ export default function MoveCleaningForm() {
                   <span className='font-semibold'>Önskat datum:</span>{' '}
                   {date ? date.toLocaleDateString('sv-SE') : ''}
                   {isWeekend(date) && (
-                    <span className='text-red-600'>
+                    <span className=''>
                       {' '}
-                      (Helgtillägg +500 SEK)
+                      Helgtillägg tillkommer och läggs på fakturan.
                     </span>
                   )}
                 </div>

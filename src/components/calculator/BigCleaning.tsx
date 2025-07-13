@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -230,8 +230,8 @@ export default function FixedPriceCalculator() {
           required
         />
         {isWeekend(date) && (
-          <p className='text-base text-red-600 mt-2'>
-            OBS! Städning på helg tillkommer en avgift på 500 SEK.
+          <p className='text-base mt-2'>
+            OBS! Städning på helg tillkommer en extra avgift.
           </p>
         )}
         {/* Övrig info */}
@@ -266,9 +266,9 @@ export default function FixedPriceCalculator() {
                   <span className='font-semibold'>Önskat datum:</span>{' '}
                   {date ? date.toLocaleDateString('sv-SE') : ''}
                   {isWeekend(date) && (
-                    <span className='text-red-600'>
+                    <span className=''>
                       {' '}
-                      (Helgtillägg +500 SEK)
+                      Helgtillägg tillkommer och läggs på fakturan.
                     </span>
                   )}
                 </div>

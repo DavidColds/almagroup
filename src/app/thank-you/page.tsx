@@ -13,10 +13,10 @@ export default function ThankYouPage() {
           className='w-56 h-56 object-cover rounded-full mb-8 shadow'
         />
         <h1 className='text-4xl font-bold  mb-6 text-center'>
-          Tack för din förfrågan!
+          Tack för din bokning!
         </h1>
         <p className='text-lg text-center mb-3'>
-          Vi har tagit emot ditt meddelande och återkommer så snart vi kan.
+          Vi har tagit emot din bokning och återkommer så snart som möjligt.
         </p>
         <p className=' text-center text-base'>
           Ha en fin dag!{' '}

@@ -7,6 +7,7 @@ const navLinks = [
   { href: '/flyttstadning', label: 'Flyttstädning', group: 'Städ' },
   { href: '/windowCleaning', label: 'Fönster Puts' },
   { href: '/kontorsstadning', label: 'Kontorsstädning' },
+  { href: '/kontakt', label: 'Kontakta oss' },
   { href: '/bygg', label: 'Bygg' },
 ];
 
@@ -79,7 +80,7 @@ export default function NavLinks({
       {(isFooter || true) && (
         <div
           className={`flex ${
-            isFooter ? 'flex-row' : 'flex-col lg:hidden' // Change flex-col to flex-row for footer
+            isFooter ? 'flex-col md:flex-row' : 'flex-col lg:hidden' // Change flex-col to flex-row for footer
           } items-center gap-8`}
         >
           {stadLinks.map(({ href, label }) => (

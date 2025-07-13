@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { useRouter } from 'next/navigation';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -33,6 +34,7 @@ const WindowCleaningCalculator = () => {
   const [stege, setStege] = useState<boolean>(false);
   const [extraInfo, setExtraInfo] = useState('');
   const [date, setDate] = useState<Date | null>(null);
+  const router = useRouter(); // Initialize useRouter
 
   // Address/contact info
   const [addressFields, setAddressFields] = useState({
@@ -119,7 +121,7 @@ const WindowCleaningCalculator = () => {
     `;
 
     try {
-      const res = await fetch('/api/window-cleaning-email', {
+      const res = await fetch('/api/window-clean', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -136,11 +138,13 @@ const WindowCleaningCalculator = () => {
         }),
       });
       const result = await res.json();
-      setLoading(false);
       if (result.status === 'success') {
-        alert('Formuläret har skickats!');
-        // Optionally reset form here
+        setTimeout(() => {
+          setLoading(false);
+          router.push('/thank-you');
+        });
       } else {
+        setLoading(false);
         alert('Något gick fel. Försök igen.');
       }
     } catch (err) {
@@ -255,8 +259,8 @@ const WindowCleaningCalculator = () => {
               required
             />
             {date && isWeekend(date) && (
-              <p className='text-base text-red-600 mt-2'>
-                OBS! Städning på helg tillkommer en avgift på 500 SEK.
+              <p className='text-base mt-2'>
+                OBS! Vid fönsterputs på helg tillkommer en extra avgift.
               </p>
             )}
           </div>
@@ -331,7 +335,10 @@ const WindowCleaningCalculator = () => {
                 ? date.toLocaleDateString('sv-SE')
                 : ''}
               {date && isWeekend(date) && (
-                <span className='text-red-600'> (Helgtillägg +500 SEK)</span>
+                <span className=''>
+                  {' '}
+                  Helgtillägg tillkommer och läggs på fakturan.
+                </span>
               )}
             </li>
             <li>

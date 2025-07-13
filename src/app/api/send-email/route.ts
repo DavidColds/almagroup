@@ -17,10 +17,10 @@ export async function POST(req: NextRequest) {
   // Format the email
   const mailOptions = {
     from: `"${data.firstName} ${data.lastName}" <${process.env.EMAIL_USERNAME}>`,
-    to: 'drughidavid6@gmail.com',
+    to: 'infoalmagrupp@gmail.com',
     subject: 'Ny bygg projekt - Alma Grupp',
     html: `
-      <div style="max-width:520px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
+      <div style="max-width:1000px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
         <div style="text-align:center;">
           <img src="https://alma-grupp.se/logo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
           <h2 style="color:#1a202c;margin-bottom:8px;">Ny Bygg Project</h2>
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       to: data.email,
       subject: 'Tack för din kontakt!',
       html: `
-        <div style="max-width:520px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
+        <div style="max-width:1000px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
           <div style="text-align:center;">
             <img src="https://alma-grupp.se/logo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
             <h2 style="color:#1a202c;margin-bottom:8px;">Tack för att du kontaktade oss, ${data.firstName}!</h2>

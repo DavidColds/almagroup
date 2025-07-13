@@ -389,8 +389,8 @@ export default function HomeCleaningForm() {
             required
           />
           {isWeekend(date) && (
-            <p className='text-base text-red-600 mt-2'>
-              OBS! Städning på helg tillkommer en avgift på 500 SEK.
+            <p className='text-base mt-2'>
+              OBS! Städning på helg tillkommer en extra avgift.
             </p>
           )}
 
@@ -420,9 +420,9 @@ export default function HomeCleaningForm() {
                     <span className='font-semibold'>Önskat datum:</span>{' '}
                     {date ? date.toLocaleDateString('sv-SE') : ''}
                     {isWeekend(date) && (
-                      <span className='text-red-600'>
+                      <span className=''>
                         {' '}
-                        (Helgtillägg +500 SEK)
+                        Helgtillägg tillkommer och läggs på fakturan.
                       </span>
                     )}
                   </div>
