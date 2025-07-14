@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     html: `
       <div style="max-width:1000px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
         <div style="text-align:center;">
-          <img src="https://alma-grupp.se/logo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
+          <img src="https://almagrupp.se/images/almagrupplogo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
           <h2 style="color:#1a202c;margin-bottom:8px;">Ny förfrågan om kontorsstädning</h2>
           <p style="font-size:18px;margin-bottom:24px;">Du har fått en ny förfrågan via hemsidan.</p>
         </div>
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
       html: `
         <div style="max-width:1000px;margin:0 auto;background:#f9f9f9;border-radius:10px;padding:32px 24px;font-family:sans-serif;color:#222;">
           <div style="text-align:center;">
-            <img src="https://alma-grupp.se/logo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
+            <img src="https://almagrupp.se/images/almagrupplogo.png" alt="Alma Grupp" style="width:80px;margin-bottom:16px;" />
             <h2 style="color:#1a202c;margin-bottom:8px;">Tack för din förfrågan, ${data.firstName}!</h2>
             <p style="font-size:18px;margin-bottom:24px;">Vi har tagit emot din förfrågan och återkommer till dig så snart som möjligt.</p>
           </div>
