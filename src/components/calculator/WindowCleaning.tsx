@@ -52,8 +52,10 @@ const WindowCleaningCalculator = () => {
   const [accepted, setAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [dateError, setDateError] = useState(false);
 
   const termsRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLDivElement>(null);
 
   const { start, price } = cleaningTypes[type];
 
@@ -86,6 +88,13 @@ const WindowCleaningCalculator = () => {
 
     const addressValidation = validateAddressFields(addressFields);
 
+    // Date validation
+    if (!date || isNaN(date.getTime())) {
+      setDateError(true);
+      dateRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     if (
       amount === undefined ||
       Object.keys(addressValidation).length > 0 ||
@@ -101,7 +110,7 @@ const WindowCleaningCalculator = () => {
     setAddressError({});
     setLoading(true);
 
-    const formattedDate = date ? date.toLocaleDateString('sv-SE') : '';
+    const formattedDate = date.toISOString();
 
     const emailContent = `
       Namn: ${addressFields.name}
@@ -132,7 +141,7 @@ const WindowCleaningCalculator = () => {
           karm: karm ?? 0,
           stege,
           date: formattedDate,
-          extraInfo: extraInfo,
+          message: extraInfo,
           total,
           emailContent,
         }),
@@ -253,10 +262,11 @@ const WindowCleaningCalculator = () => {
               selected={date}
               onChange={setDate}
               dateFormat='yyyy-MM-dd'
-              className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
+              className='w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f1f1f] px-4 py-2 text-base text-gray-900 dark:text-white'
               calendarClassName='!w-full'
               wrapperClassName='w-full'
               required
+              minDate={new Date()}
             />
             {date && isWeekend(date) && (
               <p className='text-base mt-2'>

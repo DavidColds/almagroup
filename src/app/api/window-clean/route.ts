@@ -74,11 +74,15 @@ export async function POST(req: NextRequest) {
             </tr>
             <tr>
               <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
-              <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
+              <td style="padding:6px 0;white-space:pre-line;">${data.message || '(Inget meddelande)'}</td>
             </tr>
             <tr>
               <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
               <td style="padding:6px 0;">${data.total} kr</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;"><strong>Datum:</strong></td>
+              <td style="padding:6px 0;">${data.date ? new Date(data.date).toLocaleDateString('sv-SE') : 'Ej angivet'}</td>
             </tr>
           </table>
         </div>
@@ -154,11 +158,15 @@ export async function POST(req: NextRequest) {
               </tr>
               <tr>
                 <td style="padding:6px 0;vertical-align:top;"><strong>Meddelande:</strong></td>
-                <td style="padding:6px 0;white-space:pre-line;">${data.message}</td>
+                <td style="padding:6px 0;white-space:pre-line;">${data.message || '(Inget meddelande)'}</td>
               </tr>
               <tr>
                 <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
                 <td style="padding:6px 0;">${data.total} kr</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0;"><strong>Datum:</strong></td>
+                <td style="padding:6px 0;">${data.date ? new Date(data.date).toLocaleDateString('sv-SE') : 'Ej angivet'}</td>
               </tr>
             </table>
           </div>

@@ -160,7 +160,7 @@ export default function MoveCleaningForm() {
     `;
 
     try {
-      const res = await fetch('/api/cleaning-email', {
+      const res = await fetch('/api/move-cleaning-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
