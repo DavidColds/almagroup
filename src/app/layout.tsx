@@ -58,6 +58,14 @@ export default function RootLayout({
   return (
     <html lang='sv'>
       <head>
+        {/* Cookiebot Script */}
+        <Script
+          id='Cookiebot'
+          src='https://consent.cookiebot.com/uc.js'
+          data-cbid='390e454c-d075-4ad2-84cd-04b1509fb29c'
+          strategy='beforeInteractive'
+        />
+
         {/* Google Tag Manager (GTM) */}
         <Script
           id='gtm'
