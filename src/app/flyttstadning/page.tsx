@@ -17,9 +17,8 @@ export default function Home() {
           Boka flyttstädning enkelt online
         </h2>
         <p className='text-lg lg:text-center text-gray-700 dark:text-gray-300 max-w-2xl mx-auto'>
-          Fyll i formuläret för att få en offert och boka din flyttstädning . Vi
-          erbjuder grundlig och professionell flyttstädning anpassad efter dina
-          behov.
+          Fyll i formuläret för att boka din flyttstädning. Vi erbjuder grundlig
+          och professionell flyttstädning anpassad efter dina behov.
         </p>
       </div>
 
