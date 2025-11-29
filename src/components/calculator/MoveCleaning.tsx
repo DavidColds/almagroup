@@ -261,6 +261,7 @@ export default function MoveCleaningForm() {
                 selected={date}
                 onChange={(date) => setDate(date)}
                 dateFormat='yyyy-MM-dd'
+                minDate={new Date()}
                 className='w-full rounded-lg border border-gray-300 px-4 py-2 text-base text-black shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#1f1f1f]'
               />
             </div>
@@ -311,7 +312,9 @@ export default function MoveCleaningForm() {
 
         {/* Summary Section */}
         <div className='mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center'>
-          <h3 className='text-lg font-bold mb-4'>Totalt pris</h3>
+          <h3 className='text-lg font-bold mb-4'>
+            Totalt pris efter ROT - avdrag
+          </h3>
           {price ? (
             <>
               <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>

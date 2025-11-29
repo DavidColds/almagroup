@@ -126,7 +126,7 @@ const WindowCleaningCalculator = () => {
       Behöver stege: ${stege ? 'Ja' : 'Nej'}
       Datum: ${formattedDate}
       Extra info: ${extraInfo}
-      Totalt pris: ${total} kr
+      Totalt pris efter ROT - avdrag: ${total} kr
     `;
 
     try {
@@ -355,7 +355,9 @@ const WindowCleaningCalculator = () => {
               <span className='font-semibold'>Övrig info:</span> {extraInfo}
             </li>
             <li>
-              <span className='font-semibold text-xl '>Totalt pris:</span>{' '}
+              <span className='font-semibold text-xl '>
+                Totalt pris efter ROT - avdrag:
+              </span>{' '}
               {amount !== undefined ? `${total} kr` : '—'}
             </li>
           </ul>

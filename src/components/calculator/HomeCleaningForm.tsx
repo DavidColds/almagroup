@@ -387,6 +387,7 @@ export default function HomeCleaningForm() {
             calendarClassName='!w-full'
             wrapperClassName='w-full'
             required
+            minDate={new Date()}
           />
           {isWeekend(date) && (
             <p className='text-base mt-2'>
@@ -451,7 +452,9 @@ export default function HomeCleaningForm() {
                     {addressFields.city}
                   </div>
                 </div>
-                <h3 className='text-lg font-semibold'>Totalt pris</h3>
+                <h3 className='text-lg font-semibold'>
+                  Totalt pris efter ROT - avdrag
+                </h3>
 
                 <div className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
                   {price}

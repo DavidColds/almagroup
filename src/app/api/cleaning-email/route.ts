@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;">${data.date}</td>
             </tr>
             <tr>
-              <td style="padding:6px 0;"><strong>Pris:</strong></td>
+              <td style="padding:6px 0;"><strong>Totalt pris efter ROT - avdrag:</strong></td>
               <td style="padding:6px 0;">${data.totalPrice}</td>
             </tr>
           </table>

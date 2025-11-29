@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
               <td style="padding:6px 0;white-space:pre-line;">${data.message || '(Inget meddelande)'}</td>
             </tr>
             <tr>
-              <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
+              <td style="padding:6px 0;"><strong>Totalt pris efter ROT - avdrag:</strong></td>
               <td style="padding:6px 0;">${data.total} kr</td>
             </tr>
             <tr>
@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
                 <td style="padding:6px 0;white-space:pre-line;">${data.message || '(Inget meddelande)'}</td>
               </tr>
               <tr>
-                <td style="padding:6px 0;"><strong>Totalt pris:</strong></td>
+                <td style="padding:6px 0;"><strong>Totalt pris efter ROT - avdrag:</strong></td>
                 <td style="padding:6px 0;">${data.total} kr</td>
               </tr>
               <tr>
