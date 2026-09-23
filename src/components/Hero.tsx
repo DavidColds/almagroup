@@ -32,7 +32,8 @@ export default function Hero(): JSX.Element {
             {/* Value badge */}
 
             <h1 className='text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight'>
-              Gratis storstädning värd från 2 499 kr när du tecknar abonnemang
+        ✨ 50 % rabatt på din första städning!
+        Teckna ett abonnemang idag och få halva priset på din första städning.
             </h1>
 
             {/* What's included */}
