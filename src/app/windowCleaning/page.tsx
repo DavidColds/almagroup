@@ -1,13 +1,11 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 
 import WindowCleaning from '@/components/calculator/WindowCleaning';
 import CityList from '@/components/CityList';
 
 export default function Home() {
-  const [open, setOpen] = useState<number | null>(null);
-
   return (
     <main className='lg:pt-48'>
       {/* Heading section */}

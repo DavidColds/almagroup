@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import * as React from 'react';
 
 import '@/styles/globals.css';
@@ -8,7 +9,6 @@ import Nav from '@/components/Nav';
 
 import { Providers } from '@/app/providers';
 import { siteConfig } from '@/constant/config';
-import Script from 'next/script';
 
 export const metadata = {
   title: 'Städning & Bygg i Stockholm | Alma Grupp',

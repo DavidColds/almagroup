@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -57,17 +57,13 @@ export default function FixedPriceCalculator() {
   const termsRef = useRef<HTMLInputElement>(null); // Use useRef for ref
   const router = useRouter(); // Initialize useRouter
 
-  useEffect(() => {
-    calculatePrice();
-  }, [kvm, includeOven, includeFridge, date]);
-
   const isWeekend = (date: Date | null) => {
     if (!date) return false;
     const day = date.getDay();
     return day === 0 || day === 6;
   };
 
-  const calculatePrice = () => {
+  const calculatePrice = useCallback(() => {
     const numericKvm = parseInt(kvm.replace(/\D/g, ''), 10);
     if (isNaN(numericKvm) || numericKvm <= 0) {
       setPrice(null);
@@ -94,7 +90,11 @@ export default function FixedPriceCalculator() {
     if (isWeekend(date)) total += WEEKEND_FEE;
 
     setPrice(`${total} SEK`);
-  };
+  }, [date, includeFridge, includeOven, kvm]);
+
+  useEffect(() => {
+    calculatePrice();
+  }, [calculatePrice]);
 
   // Validation helper
   function validateAddressFields(fields: typeof addressFields) {

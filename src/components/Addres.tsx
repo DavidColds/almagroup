@@ -14,7 +14,6 @@ interface AddressProps {
   onChange: (value: AddressFields) => void;
   required?: boolean;
   error?: Partial<Record<keyof AddressFields, string>>;
-  idPrefix?: string;
 }
 
 const Address: React.FC<AddressProps> = ({
@@ -22,7 +21,6 @@ const Address: React.FC<AddressProps> = ({
   onChange,
   required = false,
   error = {},
-  idPrefix = 'address',
 }) => {
   return (
     <>

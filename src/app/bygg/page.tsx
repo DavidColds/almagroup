@@ -2,9 +2,9 @@
 
 import React from 'react';
 
+import CityList from '@/components/CityList';
 import ContactForm from '@/components/ContactForm';
 import Gallery from '@/components/Gallery';
-import CityList from '@/components/CityList';
 
 export default function ComponentPage() {
   return (

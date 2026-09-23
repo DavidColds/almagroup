@@ -12,9 +12,6 @@ export default function ContactForm() {
     email: '',
   });
 
-  const [status, setStatus] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailLog, setEmailLog] = useState<string | null>(null); // <-- Add this line
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +32,6 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('');
     setLoading(true);
 
     // Validate required fields
@@ -47,7 +43,6 @@ export default function ContactForm() {
       !formData.phone ||
       !formData.email
     ) {
-      setStatus('Alla fält måste fyllas i!');
       setLoading(false);
       return;
     }
@@ -55,7 +50,6 @@ export default function ContactForm() {
     // Validate email
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(formData.email)) {
-      setStatus('Ange en giltig e-postadress.');
       setLoading(false);
       return;
     }
@@ -93,11 +87,9 @@ export default function ContactForm() {
         }, 500);
       } else {
         setLoading(false);
-        setStatus('Något gick fel. Försök igen.');
       }
     } catch (err) {
       setLoading(false);
-      setStatus('Serverfel. Kunde inte skicka formuläret.');
     }
   };
 

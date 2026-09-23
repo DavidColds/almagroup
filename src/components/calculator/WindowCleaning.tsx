@@ -1,6 +1,6 @@
+import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { useRouter } from 'next/navigation';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -94,6 +94,7 @@ const WindowCleaningCalculator = () => {
       dateRef.current?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
+    setDateError(false);
 
     if (
       amount === undefined ||
@@ -268,6 +269,11 @@ const WindowCleaningCalculator = () => {
               required
               minDate={new Date()}
             />
+            {dateError && (
+              <p className='text-sm mt-2 text-red-600'>
+                Välj ett giltigt datum.
+              </p>
+            )}
             {date && isWeekend(date) && (
               <p className='text-base mt-2'>
                 OBS! Vid fönsterputs på helg tillkommer en extra avgift.
